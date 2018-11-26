@@ -60,6 +60,7 @@ public class OperateDataField extends OperateDataAttr {
 			}
 		}
     }
+	@Override
 	public Object getObjectInner(InstructionSetContext context) throws Exception {
 
 		AppendingClassFieldManager appendingClassFieldManager = context.getExpressRunner().getAppendingClassFieldManager();
@@ -78,7 +79,8 @@ public class OperateDataField extends OperateDataAttr {
 		}
 	}
     
-	public Class<?> getType(InstructionSetContext context) throws Exception {
+	@Override
+    public Class<?> getType(InstructionSetContext context) throws Exception {
 		AppendingClassFieldManager appendingClassFieldManager = context.getExpressRunner().getAppendingClassFieldManager();
 
 		if(appendingClassFieldManager!=null) {
@@ -94,6 +96,7 @@ public class OperateDataField extends OperateDataAttr {
 		}
 	}
 
+	@Override
 	public void setObject(InstructionSetContext context, Object value) throws Exception{
 		if(this.fieldObject instanceof OperateDataVirClass){
 			((OperateDataVirClass)this.fieldObject).setValue(transferFieldName(context,this.orgiFieldName).toString(),value);

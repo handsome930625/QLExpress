@@ -23,6 +23,7 @@ public class OperateDataLocalVar extends OperateDataAttr {
 		}
 	}
 
+	@Override
 	public Object getObjectInner(InstructionSetContext context) {
 		try {
 			return this.dataObject;
@@ -31,10 +32,12 @@ public class OperateDataLocalVar extends OperateDataAttr {
 		}
 	}
     
-	public Class<?> getType(InstructionSetContext context) throws Exception {
+	@Override
+    public Class<?> getType(InstructionSetContext context) throws Exception {
 		  return this.type;
 	}
 
+	@Override
 	public void setObject(InstructionSetContext parent, Object value) {
 		this.dataObject = value;
 	}

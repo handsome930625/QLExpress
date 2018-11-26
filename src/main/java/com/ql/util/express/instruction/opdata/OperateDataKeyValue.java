@@ -34,17 +34,20 @@ public class OperateDataKeyValue extends OperateData {
 		return this.key + ":" + this.value;
 	}
 
+	@Override
 	public Object getObjectInner(InstructionSetContext context) {
 		throw new RuntimeException("没有实现方法：getObjectInner");
 	}
 
-	public Class<?> getType(InstructionSetContext context)
+	@Override
+    public Class<?> getType(InstructionSetContext context)
 			throws Exception {
 		throw new RuntimeException("没有实现方法：getType");
 	}
 
+	@Override
 	public void setObject(InstructionSetContext parent,
-			Object object) {
+						  Object object) {
 		throw new RuntimeException("没有实现方法：setObject");
 	}
 }

@@ -8,22 +8,29 @@ import com.ql.util.express.OperateData;
 
 /**
  * 处理 ",","(",")",";"
+ *
+ * @author wangyijie
  */
 
 public class OperatorNullOp extends OperatorBase {
-	public OperatorNullOp(String name) {
-		this.name = name;
-	}
-	public OperatorNullOp(String aAliasName, String aName, String aErrorInfo) {
-		this.name = aName;
-		this.aliasName = aAliasName;
-		this.errorInfo = aErrorInfo;
-	}
-	public OperateData executeInner(InstructionSetContext parent, ArraySwap list) throws Exception {
-		return executeInner(parent);
-	}
+    private static final long serialVersionUID = -5066312735249228017L;
 
-	public OperateData executeInner(IExpressContext<String,Object> parent) throws Exception {
-		return null;
-	}
+    public OperatorNullOp(String name) {
+        this.name = name;
+    }
+
+    public OperatorNullOp(String aAliasName, String aName, String aErrorInfo) {
+        this.name = aName;
+        this.aliasName = aAliasName;
+        this.errorInfo = aErrorInfo;
+    }
+
+    @Override
+    public OperateData executeInner(InstructionSetContext parent, ArraySwap list) throws Exception {
+        return executeInner(parent);
+    }
+
+    public OperateData executeInner(IExpressContext<String, Object> parent) throws Exception {
+        return null;
+    }
 }

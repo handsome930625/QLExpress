@@ -1,6 +1,9 @@
 package com.ql.util.express.parse;
 
 
+/**
+ * @author wangyijie
+ */
 public class KeyWordDefine4Java {
 	public String[] splitWord={
 			 "^","~","&","|","<<", ">>",// 位操作
@@ -131,7 +134,7 @@ public class KeyWordDefine4Java {
 				"STAT_LIST:TYPE=BLOCK,DEFINE=(STAT_BLOCK|STATEMENT)*",
 				"PROGRAM:TYPE=BLOCK,DEFINE=STAT_LIST#STAT_BLOCK",
 		};
-	public String[][] instructionFacotryMapping = {
+	public String[][] instructionFactoryMapping = {
 			{"^,~,!,++,--,&,|,<<,>>,*,/,mod,%,+,-,like,>,>=,<,<=,==,!=,&&,||,nor,=,return,alias,exportAlias,ARRAY_CALL","com.ql.util.express.instruction.OperatorInstructionFactory"},
 			{"in","com.ql.util.express.instruction.InInstructionFactory"},
 			{"exportDef","com.ql.util.express.instruction.OperatorInstructionFactory"},

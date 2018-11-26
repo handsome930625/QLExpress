@@ -23,12 +23,15 @@ public class OperateDataArrayItem extends OperateDataAttr {
 		this.arrayObject = null;
 		this.index = -1;
 	}
-	public void toResource(StringBuilder builder,int level){		
+	@Override
+	public void toResource(StringBuilder builder, int level){
 		builder.append(this.index);
     }
-	public Class<?> getType(InstructionSetContext context) throws Exception {
+	@Override
+    public Class<?> getType(InstructionSetContext context) throws Exception {
 		  return this.arrayObject.getObject(context).getClass();
 	}
+	@Override
 	public Object getObjectInner(InstructionSetContext context){
 		try {
 			return Array.get(this.arrayObject.getObject(context),this.index);
@@ -37,6 +40,7 @@ public class OperateDataArrayItem extends OperateDataAttr {
 		}
 	}
 
+	@Override
 	public void setObject(InstructionSetContext context, Object value) {
 		try {
 		 Array.set(this.arrayObject.getObject(context), this.index, value);

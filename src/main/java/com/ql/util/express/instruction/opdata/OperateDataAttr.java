@@ -22,13 +22,15 @@ public class OperateDataAttr extends OperateData {
 		public void setDefineType(Class<?> orgiType){
 			this.type = orgiType;
 		}
-		public Class<?> getDefineType(){
+		@Override
+        public Class<?> getDefineType(){
 	    	return this.type;
 	    }
 	    public String getName(){
 	    	return name;
 	    }
-	    public void toResource(StringBuilder builder,int level){		
+	    @Override
+		public void toResource(StringBuilder builder, int level){
 				builder.append(this.name);
 		}
 		public String toString() {
@@ -44,6 +46,7 @@ public class OperateDataAttr extends OperateData {
 				return ex.getMessage();
 			}
 		}
+		@Override
 		public Object getObjectInner(InstructionSetContext context) throws Exception {
 			if (this.name.equalsIgnoreCase("null")) {
 				return null;
@@ -59,6 +62,7 @@ public class OperateDataAttr extends OperateData {
 			}
 		}
 	    
+		@Override
 		public Class<?> getType(InstructionSetContext context) throws Exception {
 			   if(this.type != null){
 				   return this.type;
@@ -70,6 +74,7 @@ public class OperateDataAttr extends OperateData {
 			     return obj.getClass();
 		}
 
+		@Override
 		public void setObject(InstructionSetContext parent, Object object) throws Exception {
 			try {
 				  parent.put(this.name, object);

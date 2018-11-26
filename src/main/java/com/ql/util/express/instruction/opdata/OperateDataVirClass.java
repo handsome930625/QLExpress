@@ -118,14 +118,17 @@ public class OperateDataVirClass extends OperateDataAttr{
 			throw new Exception("不支持的数据类型:" + o.getClass().getName());
 		}
 	}
+	@Override
 	public Object getObjectInner(InstructionSetContext context) {
 		 return this;
 	}
     
-	public Class<?> getType(InstructionSetContext context) throws Exception {
+	@Override
+    public Class<?> getType(InstructionSetContext context) throws Exception {
 		return this.getClass();
 	}
 
+	@Override
 	public void setObject(InstructionSetContext parent, Object object) {
 			throw new RuntimeException("不支持的方法");
 	}
