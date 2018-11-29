@@ -15,13 +15,14 @@ public class ExpressNode implements IDataNode {
      * 节点类型
      */
     private NodeType nodeType;
-
+    /**
+     * 节点类型树 与nodeType包含关系
+     */
     private NodeType treeType;
     /**
      * 节点值
      */
     private String value;
-
     /**
      * 节点原始值
      */

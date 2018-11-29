@@ -7,11 +7,15 @@ import java.util.List;
  * @author wangyijie
  */
 public class QLMatchResultTree {
-    INodeType matchNodeType;
-    IDataNode ref;
 
-    INodeType targetNodeType;
+    public INodeType matchNodeType;
+
+    public IDataNode ref;
+
+    public INodeType targetNodeType;
+
     private List<QLMatchResultTree> left;
+
     private List<QLMatchResultTree> right;
 
     public QLMatchResultTree(INodeType aNodeType, IDataNode aRef, INodeType aTargetNodeType) {
@@ -34,25 +38,28 @@ public class QLMatchResultTree {
 
     public void addLeft(QLMatchResultTree node) {
         if (this.left == null) {
-            this.left = new ArrayList<QLMatchResultTree>();
+            this.left = new ArrayList<>();
         }
         this.left.add(node);
     }
 
     public void addLeftAll(List<QLMatchResultTree> list) {
         if (this.left == null) {
-            this.left = new ArrayList<QLMatchResultTree>();
+            this.left = new ArrayList<>();
         }
         this.left.addAll(list);
     }
 
     public void addRightAll(List<QLMatchResultTree> list) {
         if (this.right == null) {
-            this.right = new ArrayList<QLMatchResultTree>();
+            this.right = new ArrayList<>();
         }
         this.right.addAll(list);
     }
 
+    /**
+     * 将匹配到的节点转成 targetType
+     */
     public IDataNode transferExpressNodeType(IDataNode sourceNode, INodeType targetType) {
         sourceNode.setNodeType(targetType);
         if (targetType == targetType.getManager().findNodeType("CONST_STRING")) {
@@ -62,6 +69,9 @@ public class QLMatchResultTree {
         return sourceNode;
     }
 
+    /**
+     * 类型替换，构建ref的左右节点
+     */
     public void buildExpressNodeTree() {
         if (this.targetNodeType != null) {
             transferExpressNodeType(this.ref, this.targetNodeType);

@@ -110,7 +110,7 @@ public class ExpressParse {
 
             if (firstChar >= '0' && firstChar <= '9') {
                 if (result.size() > 0) {
-                    // 对负号进行特殊处理
+                    // 对负号进行特殊处理  TODO review
                     if ("-".equals(result.get(result.size() - 1).getValue())) {
                         if (result.size() == 1
                                 || result.size() >= 2
@@ -122,8 +122,7 @@ public class ExpressParse {
                                 || result.get(result.size() - 2).isTypeEqualsOrChild(":"))
 
                                 && !result.get(result.size() - 2).isTypeEqualsOrChild(")")
-                                && !result.get(result.size() - 2).isTypeEqualsOrChild("]")
-                                ) {
+                                && !result.get(result.size() - 2).isTypeEqualsOrChild("]")) {
                             result.remove(result.size() - 1);
                             tempWord = "-" + tempWord;
                         }
@@ -289,6 +288,9 @@ public class ExpressParse {
         System.out.println(builder.toString());
     }
 
+    /**
+     * 左右节点设置父节点
+     */
     public static void resetParent(ExpressNode node, ExpressNode parent) {
         node.setParent(parent);
         List<ExpressNode> leftChildren = node.getLeftChildren();
@@ -354,7 +356,7 @@ public class ExpressParse {
             log.debug("单词分析结果:" + printInfo(tempList, ","));
         }
 
-
+        // 解析语法
         QLMatchResult result = QLPattern.findMatchStatement(this.nodeTypeManager, this.nodeTypeManager
                 .findNodeType("PROGRAM").getPatternNode(), tempList, 0);
         if (result == null) {
@@ -365,10 +367,10 @@ public class ExpressParse {
             ExpressNode tempNode = tempList.get(maxPoint);
             throw new Exception("还有单词没有完成语法匹配：" + result.getMatchLastIndex() + "[" + tempNode.getValue() + ":line=" + tempNode.getLine() + ",col=" + tempNode.getCol() + "] 之后的单词 \n" + express);
         }
+        // 构建真实节点 ref设置左右节点
         result.getMatchs().get(0).buildExpressNodeTree();
         ExpressNode root = (ExpressNode) result.getMatchs().get(0).getRef();
-
-        //为了生成代码时候进行判断，需要设置每个节点的父亲
+        // 为了生成代码时候进行判断，需要设置每个节点的父亲
         resetParent(root, null);
 
         if (isTrace && log.isDebugEnabled()) {

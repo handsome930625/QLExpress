@@ -1,8 +1,5 @@
 package com.ql.util.express.match;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +25,6 @@ enum MatchMode {
  */
 public class QLPatternNode {
 
-    private static final Log log = LogFactory.getLog(QLPatternNode.class);
-
     private INodeTypeManager nodeTypeManager;
     /**
      * 原字符串
@@ -54,46 +49,46 @@ public class QLPatternNode {
     /**
      * 是否根节点,例如：if^
      */
-    protected boolean isTreeRoot;
+    public boolean isTreeRoot;
     /**
      * 最小匹配次数，0..n
      */
-    protected int minMatchNum = 1;
+    public int minMatchNum = 1;
     /**
      * 最大匹配次数
      */
-    protected int maxMatchNum = 1;
+    public int maxMatchNum = 1;
     /**
      * 匹配类型，例如 ID,if,SELECT
      */
-    protected INodeType nodeType;
+    public INodeType nodeType;
 
     /**
      * 匹配到的节点需要转换成的类型，例如 ID->CONST_STRING
      */
-    protected INodeType targetNodeType;
+    public INodeType targetNodeType;
 
     /**
      * 需要转为的虚拟类型，例如：(ID$(,$ID)*)#COL_LIST
      */
-    protected INodeType rootNodeType;
+    public INodeType rootNodeType;
 
     /**
      * 是否匹配成功，但在输出的时候忽略,用"~"表示
      * CONST$(,~$CONST)*
      */
-    protected boolean isSkip;
+    public boolean isSkip;
 
     /**
      * 取反，例如：+@,匹配不是+的所有字符
      */
-    protected boolean blame = false;
+    public boolean blame = false;
 
 
     /**
      * 子匹配模式
      */
-    List<QLPatternNode> children = new ArrayList<>();
+    public List<QLPatternNode> children = new ArrayList<>();
 
     protected QLPatternNode(INodeTypeManager manager, String name, String origContent) throws Exception {
         this(manager, name, origContent, false, 1);
@@ -121,7 +116,7 @@ public class QLPatternNode {
         }
 
         StringBuilder tempStr = new StringBuilder();
-
+        // 拆词
         int count = 0;
         for (int i = 0; i < orgStr.length(); i++) {
             if (orgStr.charAt(i) == '(') {
@@ -139,7 +134,8 @@ public class QLPatternNode {
                             + orgStr);
                 }
                 // 添加一个匿名的匹配
-                children.add(new QLPatternNode(this.nodeTypeManager, "ANONY_PATTERN", tempStr.toString(), false, this.level + 1));
+                this.children.add(new QLPatternNode(this.nodeTypeManager, "ANONY_PATTERN", tempStr.toString(), false,
+                        this.level + 1));
                 this.matchMode = MatchMode.AND;
                 tempStr = new StringBuilder();
             } else if (orgStr.charAt(i) == '|') {
@@ -148,7 +144,7 @@ public class QLPatternNode {
                     throw new Exception("不正确的模式串,在一个匹配模式中不能|,$并存,请使用字串模式:"
                             + orgStr);
                 }
-                children.add(new QLPatternNode(this.nodeTypeManager, "ANONY_PATTERN", tempStr.toString(), false, this.level + 1));
+                this.children.add(new QLPatternNode(this.nodeTypeManager, "ANONY_PATTERN", tempStr.toString(), false, this.level + 1));
                 this.matchMode = MatchMode.OR;
                 tempStr = new StringBuilder();
             } else if (orgStr.charAt(i) == '#') {

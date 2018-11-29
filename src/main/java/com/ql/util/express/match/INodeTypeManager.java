@@ -1,5 +1,9 @@
 package com.ql.util.express.match;
 
+/**
+ * @author wangyijie
+ */
 public interface INodeTypeManager {
-	public INodeType findNodeType(String name);
+
+    INodeType findNodeType(String name);
 }

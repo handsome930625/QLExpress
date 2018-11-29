@@ -33,10 +33,22 @@ enum NodeTypeKind {
 public class NodeType implements INodeType {
     private static Pattern p = Pattern.compile("([,:])\\s*(([A-Z]|-|_)*)\\s*=");
     private NodeTypeManager manager;
+    /**
+     * 关键词
+     */
     private String name;
+    /**
+     * 节点被定义的字符串
+     */
     private String defineStr;
+    /**
+     * 节点类型
+     */
     private NodeTypeKind kind;
     private NodeType realNodeType;
+    /**
+     * 指令对应的解析工厂
+     */
     private String instructionFactory;
     /**
      * 模式匹配

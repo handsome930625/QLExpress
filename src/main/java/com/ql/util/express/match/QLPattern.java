@@ -14,13 +14,20 @@ public class QLPattern {
 
     private static final Log log = LogFactory.getLog(QLPattern.class);
 
+    /**
+     * 将定义好的表达式翻译成QLPatternNode
+     *
+     * @see com.ql.util.express.parse.KeyWordDefine4Java#nodeTypeDefines
+     */
     public static QLPatternNode createPattern(INodeTypeManager nodeTypeManager, String name, String pattern) throws Exception {
         return new QLPatternNode(nodeTypeManager, name, pattern);
     }
 
     public static QLMatchResult findMatchStatement(INodeTypeManager aManager, QLPatternNode pattern, List<? extends IDataNode> nodes, int point) throws Exception {
         AtomicLong maxMatchPoint = new AtomicLong();
+
         QLMatchResult result = findMatchStatementWithAddRoot(aManager, pattern, nodes, point, true, maxMatchPoint);
+
         if (result == null || result.matchs.size() == 0) {
             throw new Exception("程序错误，不满足语法规范，没有匹配到合适的语法,最大匹配致[0:" + (maxMatchPoint.longValue() - 1) + "]");
         } else if (result.matchs.size() != 1) {
@@ -45,11 +52,13 @@ public class QLPattern {
             } else {
                 throw new Exception("不正确的类型：" + pattern.matchMode.toString());
             }
+            // 判断匹配到的次数
             if (tempResult == null) {
+                // 没找到匹配的，比较下匹配次数，如果满足也算匹配 see *
                 if (count >= pattern.minMatchNum && count <= pattern.maxMatchNum) {
-                    //正确匹配
+                    // 正确匹配
                     if (tempList == null) {
-                        tempList = new ArrayList<QLMatchResultTree>();
+                        tempList = new ArrayList<>();
                     }
                     result = new QLMatchResult(tempList, lastPoint);
                 } else {
@@ -57,8 +66,9 @@ public class QLPattern {
                 }
                 break;
             } else {
+                // 匹配到了
                 if (tempList == null) {
-                    tempList = new ArrayList<QLMatchResultTree>();
+                    tempList = new ArrayList<>();
                 }
                 lastPoint = tempResult.matchLastIndex;
                 if (pattern.isTreeRoot) {
@@ -75,14 +85,17 @@ public class QLPattern {
                     tempList.addAll(tempResult.matchs);
                 }
             }
+            // 计算下匹配到的次数，如果等于最大匹配次数，那么跳出
             count = count + 1;
             if (count == pattern.maxMatchNum) {
                 result = new QLMatchResult(tempList, lastPoint);
                 break;
             }
         }
+        // while done
+        // skip see (~) 字符
         if (result != null && pattern.isSkip) {
-            //忽略跳过所有匹配到的节点
+            // 忽略跳过所有匹配到的节点
             result.matchs.clear();
         }
 
@@ -95,17 +108,25 @@ public class QLPattern {
         return result;
     }
 
+    /**
+     * 详细匹配，我理解的是严格匹配
+     */
     private static QLMatchResult matchDetailOneTime(INodeTypeManager aManager, QLPatternNode pattern, List<? extends IDataNode> nodes, int point, AtomicLong maxMatchPoint) throws Exception {
         QLMatchResult result = null;
-        if (pattern.nodeType == aManager.findNodeType("EOF") && point == nodes.size()) {
+        INodeType eofNodeType = aManager.findNodeType("EOF");
+
+        if (pattern.nodeType == eofNodeType && point == nodes.size()) {
+            // 如果是程序结尾
             result = new QLMatchResult(new ArrayList<QLMatchResultTree>(), point + 1);
-        } else if (pattern.nodeType == aManager.findNodeType("EOF") && point < nodes.size() && nodes.get(point).getValue().equals("}")) {
+        } else if (pattern.nodeType == eofNodeType && point < nodes.size() && nodes.get(point).getValue().equals("}")) {
+            // 如果是程序结尾符，并且是 }
             result = new QLMatchResult(new ArrayList<QLMatchResultTree>(), point);
         } else if (point == nodes.size() && pattern.nodeType.getPatternNode() != null) {
+            // TODO 待定。。
             result = findMatchStatementWithAddRoot(aManager, pattern.nodeType.getPatternNode(), nodes, point, false, maxMatchPoint);
         } else if (point < nodes.size()) {
             INodeType tempNodeType = nodes.get(point).getTreeType();
-
+            // 多此一举？
             if (tempNodeType == null) {
                 tempNodeType = nodes.get(point).getNodeType();
             }
@@ -115,9 +136,11 @@ public class QLPattern {
 
             if (tempNodeType != null) {
                 List<QLMatchResultTree> tempList = new ArrayList<>();
+                // 注意 targetNodeType
                 tempList.add(new QLMatchResultTree(tempNodeType, nodes.get(point), pattern.targetNodeType));
                 point = point + 1;
                 result = new QLMatchResult(tempList, point);
+
                 traceLog(pattern, result, nodes, point - 1, 1);
             } else if (pattern.nodeType.getPatternNode() != null) {
                 result = findMatchStatementWithAddRoot(aManager, pattern.nodeType.getPatternNode(), nodes, point, false, maxMatchPoint);
@@ -140,9 +163,12 @@ public class QLPattern {
                 }
             }
         }
+
+
         if (result != null && result.matchLastIndex > maxMatchPoint.longValue()) {
             maxMatchPoint.set(result.matchLastIndex);
         }
+
         return result;
 
     }
@@ -161,9 +187,9 @@ public class QLPattern {
     }
 
     private static QLMatchResult matchAndOneTime(INodeTypeManager aManager, QLPatternNode pattern, List<? extends IDataNode> nodes, int point, AtomicLong maxMatchPoint) throws Exception {
-        int orgiPoint = point;
+        int origPoint = point;
         QLMatchResultTree root = null;
-        //用于调试日志的输出
+        // 用于调试日志的输出
         int matchCount = 0;
         List<QLMatchResultTree> tempList = null;
         for (QLPatternNode item : pattern.children) {
@@ -172,46 +198,57 @@ public class QLPattern {
             }
             QLMatchResult tempResult = findMatchStatementWithAddRoot(aManager, item, nodes,
                     point, false, maxMatchPoint);
-            if (tempResult != null) {
-                if (tempResult.matchs.size() > 0) {
-                    matchCount = matchCount + 1;
-                }
-                if (tempList == null) {
-                    tempList = new ArrayList<QLMatchResultTree>();
-                }
-                point = tempResult.matchLastIndex;
-                if (item.isTreeRoot && tempResult.matchs.size() > 0) {
-                    if (tempResult.matchs.size() > 1) {
-                        throw new Exception("根节点的数量必须是1");
-                    }
-                    if (root == null) {
-                        QLMatchResultTree tempTree = tempResult.matchs.get(0);
-                        while (tempTree.getLeft() != null && tempTree.getLeft().size() > 0) {
-                            tempTree = tempTree.getLeft().get(0);
-                        }
-                        tempTree.addLeftAll(tempList);
-                        tempList.clear();
-                    } else {
-                        tempResult.matchs.get(0).addLeft(root);
-                    }
-                    root = tempResult.matchs.get(0);
-                } else if (root != null) {
-                    root.addRightAll(tempResult.matchs);
-                } else {
-                    tempList.addAll(tempResult.matchs);
-                }
-            } else {
+            // 有一个不匹配就直接返回
+            if (tempResult == null) {
                 return null;
             }
+
+            if (tempResult.matchs.size() > 0) {
+                matchCount = matchCount + 1;
+            }
+            if (tempList == null) {
+                tempList = new ArrayList<>();
+            }
+            point = tempResult.matchLastIndex;
+            // 区分是否根节点
+            if (item.isTreeRoot && tempResult.matchs.size() > 0) {
+                if (tempResult.matchs.size() > 1) {
+                    throw new Exception("根节点的数量必须是1");
+                }
+                if (root == null) {
+                    // 递归获取最左节点
+                    QLMatchResultTree tempTree = tempResult.matchs.get(0);
+                    while (tempTree.getLeft() != null && tempTree.getLeft().size() > 0) {
+                        tempTree = tempTree.getLeft().get(0);
+                    }
+                    tempTree.addLeftAll(tempList);
+                    tempList.clear();
+                } else {
+                    tempResult.matchs.get(0).addLeft(root);
+                }
+                root = tempResult.matchs.get(0);
+            } else if (root != null) {
+                root.addRightAll(tempResult.matchs);
+            } else {
+                tempList.addAll(tempResult.matchs);
+            }
         }
+
         if (root != null) {
             tempList.add(root);
         }
+
         QLMatchResult result = new QLMatchResult(tempList, point);
-        traceLog(pattern, result, nodes, orgiPoint, matchCount);
+
+        traceLog(pattern, result, nodes, origPoint, matchCount);
+
         return result;
     }
 
+
+    /**
+     * 纯打印
+     */
     public static void traceLog(QLPatternNode pattern, QLMatchResult result,
                                 List<? extends IDataNode> nodes, int point, int matchCount) {
         if (log.isTraceEnabled() && (pattern.matchMode == MatchMode.DETAIL || pattern.matchMode == MatchMode.AND && matchCount > 1 && !"ANONY_PATTERN".equals(pattern.name))) {

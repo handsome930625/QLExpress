@@ -52,7 +52,7 @@ public class ExpressRunner {
     /**
      * 一段文本对应的规则的缓存
      */
-    private Map<String, Rule> ruleCache = new HashMap<>();
+    private final Map<String, Rule> ruleCache = new HashMap<>();
 
     private ExpressLoader loader;
 
@@ -485,10 +485,10 @@ public class ExpressRunner {
             throw new Exception("关键字：" + realKeyWordName + "不存在");
         }
         boolean isExist = this.operatorManager.isExistOperator(realNodeType.getName());
-        if (isExist == false && errorInfo != null) {
+        if (!isExist && errorInfo != null) {
             throw new Exception("关键字：" + realKeyWordName + "是通过指令来实现的，不能设置错误的提示信息，errorInfo 必须是 null");
         }
-        if (isExist == false || errorInfo == null) {
+        if (!isExist || errorInfo == null) {
             //不需要新增操作符号，只需要建立一个关键子即可
             this.manager.addOperatorWithRealNodeType(keyWordName, realNodeType.getName());
         } else {
@@ -647,7 +647,7 @@ public class ExpressRunner {
         return RuleManager.executeRule(this, rule, context, isCache, isTrace);
     }
 
-    static Pattern patternRule = Pattern.compile("rule[\\s]+'([^']+)'[\\s]+name[\\s]+'([^']+)'[\\s]+");
+    private static Pattern patternRule = Pattern.compile("rule[\\s]+'([^']+)'[\\s]+name[\\s]+'([^']+)'[\\s]+");
 
     public Rule parseRule(String text)
             throws Exception {
@@ -756,9 +756,12 @@ public class ExpressRunner {
         return result;
     }
 
+    /**
+     * 将语法树构建成指令集
+     */
     public void createInstructionSet(ExpressNode root, InstructionSet result)
             throws Exception {
-        Stack<ForRelBreakContinue> forStack = new Stack<ForRelBreakContinue>();
+        Stack<ForRelBreakContinue> forStack = new Stack<>();
         createInstructionSetPrivate(result, forStack, root, true);
         if (forStack.size() > 0) {
             throw new Exception("For处理错误");
@@ -770,8 +773,7 @@ public class ExpressRunner {
                                                boolean isRoot) throws Exception {
         InstructionFactory factory = InstructionFactory
                 .getInstructionFactory(node.getInstructionFactory());
-        boolean hasLocalVar = factory.createInstruction(this, result, forStack, node, isRoot);
-        return hasLocalVar;
+        return factory.createInstruction(this, result, forStack, node, isRoot);
     }
 
     /**
