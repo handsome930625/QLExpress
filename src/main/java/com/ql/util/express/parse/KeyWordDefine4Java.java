@@ -6,10 +6,14 @@ package com.ql.util.express.parse;
  */
 public class KeyWordDefine4Java {
     public String[] splitWord = {
-            "^", "~", "&", "|", "<<", ">>",// 位操作
-            "+", "-", "*", "/", "%", "++", "--",//四则运算：
-            ".", ",", ":", ";", "(", ")", "{", "}", "[", "]", "?",//分隔符号
-            "!", "<", ">", "<=", ">=", "==", "!=", "&&", "||",//Boolean运算符号
+            // 位操作
+            "^", "~", "&", "|", "<<", ">>",
+            // 四则运算：
+            "+", "-", "*", "/", "%", "++", "--",
+            // 分隔符号
+            ".", ",", ":", ";", "(", ")", "{", "}", "[", "]", "?",
+            // Boolean运算符号
+            "!", "<", ">", "<=", ">=", "==", "!=", "&&", "||",
             "=", "/**", "**/"
     };
     public String[] keyWords = new String[]{
@@ -161,6 +165,5 @@ public class KeyWordDefine4Java {
             {"NEW_VIR_OBJECT", "com.ql.util.express.instruction.NewVClassInstructionFactory"},
             {"COMMENT", "com.ql.util.express.instruction.NullInstructionFactory"},
             {"EXPRESS_KEY_VALUE", "com.ql.util.express.instruction.KeyValueInstructionFactory"},
-
     };
 }

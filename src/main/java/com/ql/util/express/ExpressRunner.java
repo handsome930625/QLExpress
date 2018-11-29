@@ -75,15 +75,7 @@ public class ExpressRunner {
      */
     private ExpressPackage rootExpressPackage = new ExpressPackage(null);
 
-    public AppendingClassMethodManager getAppendingClassMethodManager() {
-        return appendingClassMethodManager;
-    }
-
     private AppendingClassMethodManager appendingClassMethodManager;
-
-    public AppendingClassFieldManager getAppendingClassFieldManager() {
-        return appendingClassFieldManager;
-    }
 
     private AppendingClassFieldManager appendingClassFieldManager;
 
@@ -93,10 +85,6 @@ public class ExpressRunner {
             return new OperateDataCacheImpl(30);
         }
     };
-
-    public IOperateDataCache getOperateDataCache() {
-        return this.m_OperateDataObjectCache.get();
-    }
 
     public ExpressRunner() {
         this(false, false);
@@ -628,7 +616,7 @@ public class ExpressRunner {
 
     public RuleResult executeRule(String expressString, IExpressContext<String, Object> context, boolean isCache, boolean isTrace)
             throws Exception {
-        Rule rule = null;
+        Rule rule;
         if (isCache) {
             rule = ruleCache.get(expressString);
             if (rule == null) {
@@ -768,6 +756,9 @@ public class ExpressRunner {
         }
     }
 
+    /**
+     * 创建指令
+     */
     public boolean createInstructionSetPrivate(InstructionSet result,
                                                Stack<ForRelBreakContinue> forStack, ExpressNode node,
                                                boolean isRoot) throws Exception {
@@ -798,5 +789,17 @@ public class ExpressRunner {
 
     public void setShortCircuit(boolean isShortCircuit) {
         this.isShortCircuit = isShortCircuit;
+    }
+
+    public AppendingClassMethodManager getAppendingClassMethodManager() {
+        return appendingClassMethodManager;
+    }
+
+    public AppendingClassFieldManager getAppendingClassFieldManager() {
+        return appendingClassFieldManager;
+    }
+
+    public IOperateDataCache getOperateDataCache() {
+        return this.m_OperateDataObjectCache.get();
     }
 }

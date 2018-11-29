@@ -42,11 +42,12 @@ public class InstructionSet implements Serializable {
     /**
      * 函数和宏定义
      */
-    private Map<String, FunctionInstructionSet> functionDefine = new HashMap<String, FunctionInstructionSet>();
+    private Map<String, FunctionInstructionSet> functionDefine = new HashMap<>();
     /**
      * 为了增加性能，开始的时候缓存为数组
      */
     private Map<String, Object> cacheFunctionSet = null;
+
     private List<ExportItem> exportVar = new ArrayList<>();
     /**
      * 函数参数定义
@@ -115,8 +116,7 @@ public class InstructionSet implements Serializable {
     /**
      * 添加指令，为了提高运行期的效率，指令集用数组存储
      *
-     * @param item
-     * @return
+     * @param item 指令
      */
     private void addArrayItem(Instruction item) {
         Instruction[] newArray = new Instruction[this.instructionList.length + 1];
@@ -128,33 +128,32 @@ public class InstructionSet implements Serializable {
     /**
      * 插入数据
      *
-     * @param aPoint
-     * @param item
+     * @param position 出入位置索引
+     * @param item     插入指令对象
      */
-    private void insertArrayItem(int aPoint, Instruction item) {
+    private void insertArrayItem(int position, Instruction item) {
         Instruction[] newArray = new Instruction[this.instructionList.length + 1];
-        System.arraycopy(this.instructionList, 0, newArray, 0, aPoint);
-        System.arraycopy(this.instructionList, aPoint, newArray, aPoint + 1, this.instructionList.length - aPoint);
-        newArray[aPoint] = item;
+        System.arraycopy(this.instructionList, 0, newArray, 0, position);
+        System.arraycopy(this.instructionList, position, newArray, position + 1, this.instructionList.length - position);
+        newArray[position] = item;
         this.instructionList = newArray;
     }
 
     /**
-     * @param environmen
-     * @param context
-     * @param errorList
+     * @param environment      运行环境
+     * @param context          变量上下文
+     * @param errorList        错误集合
      * @param isReturnLastData 是否最后的结果，主要是在执行宏定义的时候需要
-     * @param aLog
-     * @return
-     * @throws Exception
+     * @param log              日志
+     * @return 执行结果
+     * @throws Exception 异常
      */
-    public CallResult excute(RunEnvironment environmen, InstructionSetContext context,
-                             List<String> errorList, boolean isReturnLastData, Log aLog)
+    public CallResult execute(RunEnvironment environment, InstructionSetContext context,
+                              List<String> errorList, boolean isReturnLastData, Log log)
             throws Exception {
-
-        //将函数export到上下文中,这儿就是重入也没有关系，不需要考虑并发
+        // 将函数export到上下文中,这儿就是重入也没有关系，不需要考虑并发
         if (cacheFunctionSet == null) {
-            Map<String, Object> tempMap = new HashMap<String, Object>();
+            Map<String, Object> tempMap = new HashMap<>();
             for (FunctionInstructionSet s : this.functionDefine.values()) {
                 tempMap.put(s.name, s.instructionSet);
             }
@@ -163,44 +162,45 @@ public class InstructionSet implements Serializable {
 
         context.addSymbol(cacheFunctionSet);
 
-        this.executeInnerOrigiInstruction(environmen, errorList, aLog);
-        if (!environmen.isExit()) {
+        this.executeInnerOrigiInstruction(environment, errorList, log);
+        if (!environment.isExit()) {
             // 是在执行完所有的指令后结束的代码
-            if (environmen.getDataStackSize() > 0) {
-                OperateData tmpObject = environmen.pop();
+            if (environment.getDataStackSize() > 0) {
+                OperateData tmpObject = environment.pop();
                 if (tmpObject == null) {
-                    environmen.quitExpress(null);
+                    environment.quitExpress(null);
                 } else {
                     if (isReturnLastData) {
                         if (tmpObject.getType(context) != null && tmpObject.getType(context).equals(void.class)) {
-                            environmen.quitExpress(null);
+                            environment.quitExpress(null);
                         } else {
-                            environmen.quitExpress(tmpObject.getObject(context));
+                            environment.quitExpress(tmpObject.getObject(context));
                         }
                     } else {
-                        environmen.quitExpress(tmpObject);
+                        environment.quitExpress(tmpObject);
                     }
                 }
             }
         }
-        if (environmen.getDataStackSize() > 1) {
+        if (environment.getDataStackSize() > 1) {
             throw new Exception("在表达式执行完毕后，堆栈中还存在多个数据");
         }
-        return OperateDataCacheManager.fetchCallResult(environmen.getReturnValue(), environmen.isExit());
+        return OperateDataCacheManager.fetchCallResult(environment.getReturnValue(), environment.isExit());
     }
 
-    public void executeInnerOrigiInstruction(RunEnvironment environmen, List<String> errorList, Log aLog) throws Exception {
+    private void executeInnerOrigiInstruction(RunEnvironment environment, List<String> errorList, Log log) throws
+            Exception {
         Instruction instruction = null;
         try {
-            while (environmen.programPoint < this.instructionList.length) {
-                instruction = this.instructionList[environmen.programPoint];
-                instruction.setLog(aLog);
+            while (environment.programPoint < this.instructionList.length) {
+                instruction = this.instructionList[environment.programPoint];
                 // 设置log
-                instruction.execute(environmen, errorList);
+                instruction.setLog(log);
+                instruction.execute(environment, errorList);
             }
         } catch (Exception e) {
             if (printInstructionError) {
-                log.error("当前ProgramPoint = " + environmen.programPoint);
+                log.error("当前ProgramPoint = " + environment.programPoint);
                 log.error("当前指令" + instruction);
                 log.error(e);
             }
@@ -281,12 +281,6 @@ public class InstructionSet implements Serializable {
         return type;
     }
 
-    public void appendSpace(StringBuffer buffer, int level) {
-        for (int i = 0; i < level; i++) {
-            buffer.append("    ");
-        }
-    }
-
     @Override
     public String toString() {
         return "\n" + toString(0);
@@ -320,6 +314,24 @@ public class InstructionSet implements Serializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void appendSpace(StringBuffer buffer, int level) {
+        for (int i = 0; i < level; i++) {
+            buffer.append("    ");
+        }
+    }
+
+    public Instruction[] getInstructionList() {
+        return instructionList;
+    }
+
+    public List<ExportItem> getExportVar() {
+        return exportVar;
+    }
+
+    public List<OperateDataLocalVar> getParameterList() {
+        return parameterList;
     }
 }
 

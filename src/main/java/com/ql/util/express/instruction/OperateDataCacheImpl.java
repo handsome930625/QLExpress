@@ -3,28 +3,32 @@ package com.ql.util.express.instruction;
 import com.ql.util.express.*;
 import com.ql.util.express.instruction.opdata.*;
 
+/**
+ * @author wangyijie
+ */
 public class OperateDataCacheImpl implements IOperateDataCache {
-    OperateData[] dataList;
-    OperateDataAttr[] attrList;
-    OperateDataLocalVar[] localVarList;
-    OperateDataField[] fieldList;
-    OperateDataArrayItem[] arrayList;
-    OperateDataKeyValue[] keyValueList;
-    RunEnvironment[] environmentList;
-    CallResult[] callResultList;
-    InstructionSetContext[] contextList;
-
-    int dataPoint = 0;
-    int attrPoint = 0;
-    int localVarPoint = 0;
-    int fieldPoint = 0;
-    int arrayPoint = 0;
-    int keyValuePoint = 0;
-    int environmentPoint = 0;
-    int callResultPoint = 0;
-    int contextPoint = 0;
-
-    int length;
+    /**
+     * 操作变量结果存储数组
+     */
+    private OperateData[] dataList;
+    private OperateDataAttr[] attrList;
+    private OperateDataLocalVar[] localVarList;
+    private OperateDataField[] fieldList;
+    private OperateDataArrayItem[] arrayList;
+    private OperateDataKeyValue[] keyValueList;
+    private RunEnvironment[] environmentList;
+    private CallResult[] callResultList;
+    private InstructionSetContext[] contextList;
+    private int dataPoint = 0;
+    private int attrPoint = 0;
+    private int localVarPoint = 0;
+    private int fieldPoint = 0;
+    private int arrayPoint = 0;
+    private int keyValuePoint = 0;
+    private int environmentPoint = 0;
+    private int callResultPoint = 0;
+    private int contextPoint = 0;
+    private int length;
 
     public OperateDataCacheImpl(int len) {
         length = len;
@@ -94,7 +98,7 @@ public class OperateDataCacheImpl implements IOperateDataCache {
 
     @Override
     public InstructionSetContext fetchInstructionSetContext(boolean aIsExpandToParent, ExpressRunner aRunner, IExpressContext<String, Object> aParent, ExpressLoader aExpressLoader, boolean aIsSupportDynamicFieldName) {
-        InstructionSetContext result = null;
+        InstructionSetContext result;
         if (contextPoint < length) {
             result = contextList[contextPoint];
             result.initial(aIsExpandToParent, aRunner, aParent, aExpressLoader, aIsSupportDynamicFieldName);
@@ -107,7 +111,7 @@ public class OperateDataCacheImpl implements IOperateDataCache {
 
     @Override
     public RunEnvironment fetRunEnvironment(InstructionSet aInstructionSet, InstructionSetContext aContext, boolean aIsTrace) {
-        RunEnvironment result = null;
+        RunEnvironment result;
         if (environmentPoint < length) {
             result = environmentList[environmentPoint];
             result.initial(aInstructionSet, aContext, aIsTrace);
@@ -120,7 +124,7 @@ public class OperateDataCacheImpl implements IOperateDataCache {
 
     @Override
     public CallResult fetchCallResult(Object aReturnValue, boolean aIsExit) {
-        CallResult result = null;
+        CallResult result;
         if (callResultPoint < length) {
             result = callResultList[callResultPoint];
             result.initial(aReturnValue, aIsExit);
@@ -133,7 +137,7 @@ public class OperateDataCacheImpl implements IOperateDataCache {
 
     @Override
     public OperateData fetchOperateData(Object obj, Class<?> aType) {
-        OperateData result = null;
+        OperateData result;
         if (dataPoint < length) {
             result = dataList[dataPoint];
             result.initial(obj, aType);
@@ -146,7 +150,7 @@ public class OperateDataCacheImpl implements IOperateDataCache {
 
     @Override
     public OperateDataAttr fetchOperateDataAttr(String name, Class<?> aType) {
-        OperateDataAttr result = null;
+        OperateDataAttr result;
         if (attrPoint < length) {
             result = attrList[attrPoint];
             result.initialDataAttr(name, aType);
@@ -159,7 +163,7 @@ public class OperateDataCacheImpl implements IOperateDataCache {
 
     @Override
     public OperateDataLocalVar fetchOperateDataLocalVar(String name, Class<?> aType) {
-        OperateDataLocalVar result = null;
+        OperateDataLocalVar result;
         if (localVarPoint < length) {
             result = localVarList[localVarPoint];
             result.initialDataLocalVar(name, aType);
@@ -172,7 +176,7 @@ public class OperateDataCacheImpl implements IOperateDataCache {
 
     @Override
     public OperateDataField fetchOperateDataField(Object aFieldObject, String aFieldName) {
-        OperateDataField result = null;
+        OperateDataField result;
         if (fieldPoint < length) {
             result = fieldList[fieldPoint];
             result.initialDataField(aFieldObject, aFieldName);
@@ -185,7 +189,7 @@ public class OperateDataCacheImpl implements IOperateDataCache {
 
     @Override
     public OperateDataArrayItem fetchOperateDataArrayItem(OperateData aArrayObject, int aIndex) {
-        OperateDataArrayItem result = null;
+        OperateDataArrayItem result;
         if (arrayPoint < length) {
             result = arrayList[arrayPoint];
             result.initialDataArrayItem(aArrayObject, aIndex);
@@ -198,7 +202,7 @@ public class OperateDataCacheImpl implements IOperateDataCache {
 
     @Override
     public OperateDataKeyValue fetchOperateDataKeyValue(OperateData aKey, OperateData aValue) {
-        OperateDataKeyValue result = null;
+        OperateDataKeyValue result;
         if (this.keyValuePoint < length) {
             result = this.keyValueList[keyValuePoint];
             result.initialDataKeyValue(aKey, aValue);

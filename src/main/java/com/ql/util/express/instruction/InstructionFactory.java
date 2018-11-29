@@ -14,15 +14,23 @@ import java.util.Stack;
  * @author wangyijie
  */
 public abstract class InstructionFactory {
+    /**
+     * 指令工厂map
+     */
+    private static final Map<String, InstructionFactory> INSTRUCTION_FACTORY = new HashMap<>();
 
-    private static Map<String, InstructionFactory> instructionFactory = new HashMap<>();
-
+    /**
+     * 获取对应 node type 的指令工厂
+     */
     public static InstructionFactory getInstructionFactory(String factory) {
         try {
-            InstructionFactory result = instructionFactory.get(factory);
+            InstructionFactory result = INSTRUCTION_FACTORY.get(factory);
             if (result == null) {
-                result = (InstructionFactory) Class.forName(factory)
-                        .newInstance();
+                synchronized (INSTRUCTION_FACTORY) {
+                    result = (InstructionFactory) Class.forName(factory)
+                            .newInstance();
+                    INSTRUCTION_FACTORY.put(factory, result);
+                }
             }
             return result;
         } catch (Exception e) {
@@ -30,7 +38,7 @@ public abstract class InstructionFactory {
         }
     }
 
-    public abstract boolean createInstruction(ExpressRunner aCompile, InstructionSet result,
+    public abstract boolean createInstruction(ExpressRunner compile, InstructionSet result,
                                               Stack<ForRelBreakContinue> forStack, ExpressNode node, boolean isRoot)
             throws Exception;
 }

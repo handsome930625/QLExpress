@@ -15,7 +15,8 @@ public class OperateDataLocalVar extends OperateDataAttr {
 	public void clearDataLocalVar(){
 		super.clear();
 	}
-	public String toString() {
+	@Override
+    public String toString() {
 		try {			
 			return name +":localVar";
 		} catch (Exception ex) {

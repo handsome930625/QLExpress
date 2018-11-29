@@ -3,7 +3,6 @@ package com.ql.util.express.instruction.opdata;
 import com.ql.util.express.ExpressUtil;
 import com.ql.util.express.InstructionSetContext;
 import com.ql.util.express.parse.AppendingClassFieldManager;
-import com.ql.util.express.parse.AppendingClassMethodManager;
 
 public class OperateDataField extends OperateDataAttr {
 	Object fieldObject;
@@ -32,10 +31,12 @@ public class OperateDataField extends OperateDataAttr {
 		this.fieldObject = null;
 		this.orgiFieldName = null;
 	}
-    public String getName(){
+    @Override
+	public String getName(){
     	return name;
     }
-	public String toString() {
+	@Override
+    public String toString() {
 		try {			
 			return name;
 		} catch (Exception ex) {

@@ -13,17 +13,24 @@ import com.ql.util.express.parse.ExpressNode;
 import java.util.Stack;
 
 
-class OperatorInstructionFactory extends InstructionFactory {
+/**
+ * 操作符指令工厂
+ *
+ * @author wangyijie
+ */
+public class OperatorInstructionFactory extends InstructionFactory {
 
     @Override
-    public boolean createInstruction(ExpressRunner aCompile, InstructionSet result, Stack<ForRelBreakContinue> forStack, ExpressNode node, boolean isRoot)
+    public boolean createInstruction(ExpressRunner compile, InstructionSet result, Stack<ForRelBreakContinue>
+            forStack, ExpressNode node, boolean isRoot)
             throws Exception {
         boolean returnVal = false;
+        // 抽到抽象类中执行
         ExpressNode[] children = node.getChildren();
         int[] finishPoint = new int[children.length];
         for (int i = 0; i < children.length; i++) {
             ExpressNode tmpNode = children[i];
-            boolean tmpHas = aCompile.createInstructionSetPrivate(result, forStack, tmpNode, false);
+            boolean tmpHas = compile.createInstructionSetPrivate(result, forStack, tmpNode, false);
             returnVal = returnVal || tmpHas;
             finishPoint[i] = result.getCurrentPoint();
         }
@@ -31,11 +38,12 @@ class OperatorInstructionFactory extends InstructionFactory {
         if (node.isTypeEqualsOrChild("return")) {
             result.addInstruction(new InstructionReturn(children.length > 0).setLine(node.getLine()));
         } else {
-            OperatorBase op = aCompile.getOperatorFactory().newInstance(node);
-            result.addInstruction(new InstructionOperator(op, children.length).setLine(node.getLine()).setLine(node.getLine()));
-            if (node.isTypeEqualsOrChild("&&") && aCompile.isShortCircuit()) {
+            OperatorBase op = compile.getOperatorFactory().newInstance(node);
+            result.addInstruction(new InstructionOperator(op, children.length).setLine(node.getLine()));
+            // 逻辑短路
+            if (node.isTypeEqualsOrChild("&&") && compile.isShortCircuit()) {
                 result.insertInstruction(finishPoint[0] + 1, new InstructionGoToWithCondition(false, result.getCurrentPoint() - finishPoint[0] + 1, false).setLine(node.getLine()));
-            } else if (node.isTypeEqualsOrChild("||") && aCompile.isShortCircuit()) {
+            } else if (node.isTypeEqualsOrChild("||") && compile.isShortCircuit()) {
                 result.insertInstruction(finishPoint[0] + 1, new InstructionGoToWithCondition(true, result.getCurrentPoint() - finishPoint[0] + 1, false).setLine(node.getLine()));
             } else if (node.isTypeEqualsOrChild("nor")) {
                 result.insertInstruction(finishPoint[0] + 1, new InstructionGoToWithNotNull(result.getCurrentPoint() - finishPoint[0] + 1, false).setLine(node.getLine()));

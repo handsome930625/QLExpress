@@ -112,6 +112,9 @@ public class NodeType implements INodeType {
         return this.manager.findNodeType(parent).isContainerChild(this);
     }
 
+    /**
+     * 判断该nodeType 是否包含 child 节点，即父子节点关系
+     */
     public boolean isContainerChild(NodeType child) {
         if (this.equals(child)) {
             return true;

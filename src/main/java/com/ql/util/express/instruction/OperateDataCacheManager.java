@@ -18,8 +18,8 @@ public class OperateDataCacheManager {
         }
     };
 
-    public static void push(ExpressRunner aRunner) {
-        m_OperateDataObjectCache.get().push(aRunner);
+    public static void push(ExpressRunner runner) {
+        m_OperateDataObjectCache.get().push(runner);
     }
 
     public static IOperateDataCache getOperateDataCache() {
@@ -50,6 +50,9 @@ public class OperateDataCacheManager {
         return getOperateDataCache().fetchOperateDataKeyValue(aKey, aValue);
     }
 
+    /**
+     * 获取运行环境上下文
+     */
     public static RunEnvironment fetRunEnvironment(InstructionSet aInstructionSet, InstructionSetContext aContext, boolean aIsTrace) {
         return getOperateDataCache().fetRunEnvironment(aInstructionSet, aContext, aIsTrace);
     }
@@ -58,6 +61,9 @@ public class OperateDataCacheManager {
         return getOperateDataCache().fetchCallResult(aReturnValue, aIsExit);
     }
 
+    /**
+     * 获取指令上下文
+     */
     public static InstructionSetContext fetchInstructionSetContext(boolean aIsExpandToParent, ExpressRunner aRunner, IExpressContext<String, Object> aParent, ExpressLoader aExpressLoader, boolean aIsSupportDynamicFieldName) {
         return getOperateDataCache().fetchInstructionSetContext(aIsExpandToParent, aRunner, aParent, aExpressLoader, aIsSupportDynamicFieldName);
     }
@@ -69,9 +75,7 @@ public class OperateDataCacheManager {
     public static void resetCache(ExpressRunner aRunner) {
         getOperateDataCache().resetCache();
         m_OperateDataObjectCache.get().pop(aRunner);
-
     }
-
 
 }
 
@@ -80,21 +84,16 @@ class RunnerDataCache {
 
     Stack<ExpressRunner> stack = new Stack<>();
 
-    public void push(ExpressRunner aRunner) {
-        this.cache = aRunner.getOperateDataCache();
-        this.stack.push(aRunner);
+    public void push(ExpressRunner runner) {
+        this.cache = runner.getOperateDataCache();
+        this.stack.push(runner);
     }
 
     public IOperateDataCache getOperateDataCache() {
         return this.cache;
     }
 
-    public void pop(ExpressRunner aRunner) {
-
-//	    原有的逻辑
-//		this.cache = this.stack.pop().getOperateDataCache();
-
-        // bugfix处理ExpressRunner嵌套情况下，cache还原的问题
+    public void pop(ExpressRunner runner) {
         this.stack.pop();
         if (!this.stack.isEmpty()) {
             this.cache = this.stack.peek().getOperateDataCache();

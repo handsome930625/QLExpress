@@ -12,6 +12,8 @@ import java.util.Date;
  */
 public abstract class Operator extends OperatorBase {
 
+    private static final long serialVersionUID = 5819032063499141852L;
+
     @Override
     public OperateData executeInner(InstructionSetContext context, ArraySwap list) throws Exception {
         Object[] parameters = new Object[list.length];

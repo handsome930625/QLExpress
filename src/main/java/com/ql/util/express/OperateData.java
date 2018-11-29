@@ -12,8 +12,13 @@ import java.io.Serializable;
 public class OperateData implements Serializable {
 
     private static final long serialVersionUID = 4749348640699065036L;
-
+    /**
+     * object value
+     */
     protected Object dataObject;
+    /**
+     * object class
+     */
     protected Class<?> type;
 
     public OperateData(Object obj, Class<?> aType) {
@@ -74,7 +79,6 @@ public class OperateData implements Serializable {
         throw new RuntimeException("必须在子类中实现此方法");
     }
 
-
     @Override
     public String toString() {
         if (this.dataObject == null) {
@@ -87,6 +91,7 @@ public class OperateData implements Serializable {
             }
         }
     }
+
 
     public void toResource(StringBuilder builder, int level) {
         if (this.dataObject != null) {

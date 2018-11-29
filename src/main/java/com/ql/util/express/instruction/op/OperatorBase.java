@@ -68,13 +68,11 @@ public abstract class OperatorBase implements java.io.Serializable {
 
     public OperateData execute(InstructionSetContext context,
                                ArraySwap list, List<String> errorList) throws Exception {
-        OperateData result;
-        result = this.executeInner(context, list);
-        //输出错误信息
+        OperateData result = this.executeInner(context, list);
+        // 输出错误信息
         if (errorList != null && this.errorInfo != null && result != null) {
             Object obj = result.getObject(context);
-            if (obj instanceof Boolean
-                    && !(Boolean) obj) {
+            if (obj instanceof Boolean && !(Boolean) obj) {
                 String tmpStr = ExpressUtil.replaceString(this.errorInfo,
                         toObjectList(context, list));
                 if (!errorList.contains(tmpStr)) {

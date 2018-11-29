@@ -205,7 +205,7 @@ public class ExpressNode implements IDataNode {
             return;
         }
         if (this.leftChildren == null) {
-            this.leftChildren = new ArrayList<ExpressNode>();
+            this.leftChildren = new ArrayList<>();
         }
         this.leftChildren.add(leftChild);
     }
@@ -215,13 +215,17 @@ public class ExpressNode implements IDataNode {
             return;
         }
         if (this.leftChildren == null) {
-            this.leftChildren = new ArrayList<ExpressNode>();
+            this.leftChildren = new ArrayList<>();
         }
         this.leftChildren.add(rightChild);
     }
 
+    /**
+     * 获取左右节点数组
+     * 注意先左节点再右节点
+     */
     public ExpressNode[] getChildren() {
-        List<ExpressNode> result = new ArrayList<ExpressNode>();
+        List<ExpressNode> result = new ArrayList<>();
         if (this.leftChildren != null && this.leftChildren.size() > 0) {
             result.addAll(this.leftChildren);
         }

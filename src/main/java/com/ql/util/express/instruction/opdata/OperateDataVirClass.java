@@ -133,6 +133,7 @@ public class OperateDataVirClass extends OperateDataAttr{
 			throw new RuntimeException("不支持的方法");
 	}
 	
+    @Override
     public String toString(){
     	return "VClass[" + this.name+"]";
     }
