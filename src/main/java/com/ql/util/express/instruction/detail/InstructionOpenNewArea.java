@@ -2,7 +2,7 @@ package com.ql.util.express.instruction.detail;
 
 import com.ql.util.express.InstructionSetContext;
 import com.ql.util.express.RunEnvironment;
-import com.ql.util.express.instruction.OperateDataCacheManager;
+import com.ql.util.express.instruction.opcache.OperateDataCacheManager;
 
 import java.util.List;
 

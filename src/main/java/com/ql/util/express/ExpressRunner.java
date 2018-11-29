@@ -1,9 +1,9 @@
 package com.ql.util.express;
 
-import com.ql.util.express.instruction.ForRelBreakContinue;
-import com.ql.util.express.instruction.IOperateDataCache;
-import com.ql.util.express.instruction.InstructionFactory;
-import com.ql.util.express.instruction.OperateDataCacheImpl;
+import com.ql.util.express.instruction.factory.ForRelBreakContinue;
+import com.ql.util.express.instruction.opcache.IOperateDataCache;
+import com.ql.util.express.instruction.factory.InstructionFactory;
+import com.ql.util.express.instruction.opcache.OperateDataCacheImpl;
 import com.ql.util.express.instruction.op.*;
 import com.ql.util.express.parse.*;
 import com.ql.util.express.rule.Condition;

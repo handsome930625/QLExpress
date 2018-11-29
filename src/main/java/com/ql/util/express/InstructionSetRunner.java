@@ -1,6 +1,6 @@
 package com.ql.util.express;
 
-import com.ql.util.express.instruction.OperateDataCacheManager;
+import com.ql.util.express.instruction.opcache.OperateDataCacheManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

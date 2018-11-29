@@ -1,7 +1,7 @@
 package com.ql.util.express;
 
 import com.ql.util.express.instruction.FunctionInstructionSet;
-import com.ql.util.express.instruction.OperateDataCacheManager;
+import com.ql.util.express.instruction.opcache.OperateDataCacheManager;
 import com.ql.util.express.instruction.detail.*;
 import com.ql.util.express.instruction.opdata.OperateDataLocalVar;
 import org.apache.commons.logging.Log;

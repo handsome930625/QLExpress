@@ -3,7 +3,7 @@ package com.ql.util.express.instruction.op;
 import java.lang.reflect.Method;
 
 import com.ql.util.express.*;
-import com.ql.util.express.instruction.OperateDataCacheManager;
+import com.ql.util.express.instruction.opcache.OperateDataCacheManager;
 
 /**
  * 用户自定义的服务函数操作

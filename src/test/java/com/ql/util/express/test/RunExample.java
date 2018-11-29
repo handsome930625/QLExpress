@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationContextAware;
 import com.ql.util.express.ExpressRunner;
 import com.ql.util.express.IExpressContext;
 import com.ql.util.express.Operator;
-import com.ql.util.express.instruction.OperateDataCacheManager;
 
 public class RunExample implements ApplicationContextAware, Runnable {
 	private ApplicationContext applicationContext;

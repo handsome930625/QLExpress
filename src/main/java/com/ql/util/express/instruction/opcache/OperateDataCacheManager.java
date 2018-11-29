@@ -1,4 +1,4 @@
-package com.ql.util.express.instruction;
+package com.ql.util.express.instruction.opcache;
 
 import com.ql.util.express.*;
 import com.ql.util.express.instruction.opdata.*;
@@ -82,7 +82,7 @@ public class OperateDataCacheManager {
 class RunnerDataCache {
     IOperateDataCache cache;
 
-    Stack<ExpressRunner> stack = new Stack<>();
+    private Stack<ExpressRunner> stack = new Stack<>();
 
     public void push(ExpressRunner runner) {
         this.cache = runner.getOperateDataCache();

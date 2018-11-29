@@ -4,7 +4,7 @@ import com.ql.util.express.ArraySwap;
 import com.ql.util.express.ExpressUtil;
 import com.ql.util.express.InstructionSetContext;
 import com.ql.util.express.OperateData;
-import com.ql.util.express.instruction.OperateDataCacheManager;
+import com.ql.util.express.instruction.opcache.OperateDataCacheManager;
 import com.ql.util.express.instruction.opdata.OperateClass;
 import com.ql.util.express.instruction.opdata.OperateDataVirClass;
 import com.ql.util.express.parse.AppendingClassMethodManager;

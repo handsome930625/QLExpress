@@ -1,4 +1,4 @@
-package com.ql.util.express.instruction;
+package com.ql.util.express.instruction.factory;
 
 import com.ql.util.express.ExpressRunner;
 import com.ql.util.express.InstructionSet;

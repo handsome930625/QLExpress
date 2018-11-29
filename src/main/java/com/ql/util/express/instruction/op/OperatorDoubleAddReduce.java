@@ -1,7 +1,7 @@
 package com.ql.util.express.instruction.op;
 
 import com.ql.util.express.*;
-import com.ql.util.express.instruction.OperateDataCacheManager;
+import com.ql.util.express.instruction.opcache.OperateDataCacheManager;
 
 /**
  * @author wangyijie
