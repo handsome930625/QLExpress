@@ -16,28 +16,26 @@ import java.util.Map;
  * Created by tianqiao on 16/12/8.
  */
 public class RuleManager {
-    
+
     private static final Log log = LogFactory.getLog(RuleManager.class);
-    
-    public static RuleResult executeRule(ExpressRunner runner,Rule rule, IExpressContext<String,Object> context, boolean isCache, boolean isTrace)
-    {
+
+    public static RuleResult executeRule(ExpressRunner runner, Rule rule, IExpressContext<String, Object> context, boolean isCache, boolean isTrace) {
         RuleResult result = new RuleResult();
         result.setRule(rule);
         Map<String, Boolean> traceMap = new LinkedHashMap<String, Boolean>();
         result.setTraceMap(traceMap);
         Object actionResult = null;
-        for(RuleCase ruleCase : rule.getRuleCases())
-        {
+        for (RuleCase ruleCase : rule.getRuleCases()) {
             Condition root = ruleCase.getCondition();
-            Boolean conditionResult = calculateCondition(runner,context,root,traceMap,isCache,isTrace,result);
-            if(conditionResult==true){
-                for(Action action :ruleCase.getActions()){
+            Boolean conditionResult = calculateCondition(runner, context, root, traceMap, isCache, isTrace, result);
+            if (conditionResult) {
+                for (Action action : ruleCase.getActions()) {
                     try {
-                        traceMap.put(action.getNodeId()+"",true);
-                        actionResult = runner.execute(action.getText(),context,null,isCache,isTrace);
+                        traceMap.put(action.getNodeId() + "", true);
+                        actionResult = runner.execute(action.getText(), context, null, isCache, isTrace);
                     } catch (Exception e) {
                         result.setHasException(true);
-                        log.error("执行action出错:action=\n"+action.getText(),e);
+                        log.error("执行action出错:action=\n" + action.getText(), e);
                         actionResult = null;
                     }
                 }
@@ -48,20 +46,19 @@ public class RuleManager {
         return result;
     }
 
-    private static Boolean calculateCondition(ExpressRunner runner, IExpressContext<String, Object> context, Condition root, Map<String, Boolean> traceMap, boolean isCache, boolean isTrace, RuleResult result)
-    {
+    private static Boolean calculateCondition(ExpressRunner runner, IExpressContext<String, Object> context, Condition root, Map<String, Boolean> traceMap, boolean isCache, boolean isTrace, RuleResult result) {
         boolean isShortCircuit = runner.isShortCircuit();
-        String key = root.getNodeId()+"";
-        if(root.getType()==ConditionType.Leaf){
+        String key = root.getNodeId() + "";
+        if (root.getType() == ConditionType.Leaf) {
             String text = root.getText();
             try {
-                Boolean r = (Boolean) runner.execute(text,context,null,isCache,isTrace);
-                traceMap.put(key,r);
+                Boolean r = (Boolean) runner.execute(text, context, null, isCache, isTrace);
+                traceMap.put(key, r);
                 return r;
             } catch (Exception e) {
                 result.setHasException(true);
-                log.error("计算condition出错:condition=\n"+text,e);
-                traceMap.put(key,false);
+                log.error("计算condition出错:condition=\n" + text, e);
+                traceMap.put(key, false);
                 return false;
             }
         }
@@ -69,33 +66,33 @@ public class RuleManager {
 
         Boolean unionLogicResult = null;
         ConditionType rootType = root.getType();
-        if(root.getChildren()!=null) {
+        if (root.getChildren() != null) {
             for (Condition sub : root.getChildren()) {
-                Boolean subResult = calculateCondition(runner,context,sub,traceMap,isCache,isTrace, result);
-                if(unionLogicResult==null){
+                Boolean subResult = calculateCondition(runner, context, sub, traceMap, isCache, isTrace, result);
+                if (unionLogicResult == null) {
                     unionLogicResult = subResult;
-                }else{
+                } else {
                     if (rootType == ConditionType.And) {
                         unionLogicResult = unionLogicResult && subResult;
-                    }else if (rootType == ConditionType.Or) {
+                    } else if (rootType == ConditionType.Or) {
                         unionLogicResult = unionLogicResult || subResult;
                     }
                 }
-                if(isShortCircuit) {
+                if (isShortCircuit) {
                     if (rootType == ConditionType.And) {
-                        if(unionLogicResult==false){
+                        if (!unionLogicResult) {
                             break;
                         }
                     }
                     if (rootType == ConditionType.Or) {
-                        if(unionLogicResult==true){
+                        if (unionLogicResult) {
                             break;
                         }
                     }
                 }
             }
         }
-        traceMap.put(key,unionLogicResult);
+        traceMap.put(key, unionLogicResult);
         return unionLogicResult;
     }
 
@@ -104,37 +101,37 @@ public class RuleManager {
         if (ifNode != null) {
             Rule rule = new Rule();
             addRuleCaseByExpress(ifNode, rule, words);
-            tagRuleConitionId(rule);
+            tagRuleConditionId(rule);
             return rule;
         }
         return null;
     }
 
-    private static Integer tagRuleConitionId(Rule rule) {
+    private static Integer tagRuleConditionId(Rule rule) {
         Integer nodeId = 0;
         Integer level = 0;
         rule.setNodeId(nodeId++);
         rule.setLevel(level++);
-        for(RuleCase ruleCase: rule.getRuleCases()){
+        for (RuleCase ruleCase : rule.getRuleCases()) {
             ruleCase.setNodeId(nodeId++);
             ruleCase.setLevel(level);
             Condition root = ruleCase.getCondition();
-            nodeId = tagConditionNode(root,nodeId,level+1);
-            List<Action>actions = ruleCase.getActions();
-            for(Action action:actions){
-                action.setLevel(level+1);
+            nodeId = tagConditionNode(root, nodeId, level + 1);
+            List<Action> actions = ruleCase.getActions();
+            for (Action action : actions) {
+                action.setLevel(level + 1);
                 action.setNodeId(nodeId++);
             }
         }
         return nodeId;
     }
 
-    private static Integer tagConditionNode(Condition root,Integer nodeId,Integer level) {
+    private static Integer tagConditionNode(Condition root, Integer nodeId, Integer level) {
         root.setLevel(level);
         root.setNodeId(nodeId++);
-        if(root.getChildren()!=null) {
+        if (root.getChildren() != null) {
             for (Condition sub : root.getChildren()) {
-                nodeId = tagConditionNode(sub, nodeId,level+1);
+                nodeId = tagConditionNode(sub, nodeId, level + 1);
             }
         }
         return nodeId;
@@ -142,17 +139,17 @@ public class RuleManager {
 
     private static void addRuleCaseByExpress(ExpressNode ifNode, Rule rule, Word[] words) {
         ExpressNode[] children = ifNode.getChildren();
-        ExpressNode condtion = null;
-        ExpressNode action = null;
+        ExpressNode condition;
+        ExpressNode action;
         ExpressNode nextCase = null;
 
         //[0]ConditionNode
         int point = 0;
         ExpressNode first = children[point];
         if (isNodeType(first, "CHILD_EXPRESS")) {
-            condtion = first.getChildren()[0];
+            condition = first.getChildren()[0];
         } else {
-            condtion = first;
+            condition = first;
         }
         point++;
 
@@ -174,7 +171,7 @@ public class RuleManager {
                 nextCase = children[point];
             }
         }
-        rule.addRuleCases(createRuleCase(condtion, action, words));
+        rule.addRuleCases(createRuleCase(condition, action, words));
         if (nextCase != null) {
             addRuleCaseByExpress(nextCase, rule, words);
         }
@@ -199,17 +196,16 @@ public class RuleManager {
 
         Condition ruleCondition = new Condition();
         transferCondition(condition, ruleCondition, words);
-        List<Action> actions = new ArrayList<Action>();
+        List<Action> actions = new ArrayList<>();
         if (isNodeType(action, "STAT_BLOCK")) {
             ExpressNode[] children = action.getChildren();
             for (ExpressNode actionChild : children) {
-                actions.add(new Action(makeActionString(actionChild,words)));
+                actions.add(new Action(makeActionString(actionChild, words)));
             }
         } else {
-            actions.add(new Action(makeActionString(action,words)));
+            actions.add(new Action(makeActionString(action, words)));
         }
-        RuleCase ruleCase = new RuleCase(ruleCondition, actions);
-        return ruleCase;
+        return new RuleCase(ruleCondition, actions);
     }
 
     private static void transferCondition(ExpressNode express, Condition condition, Word[] words) {
@@ -233,7 +229,7 @@ public class RuleManager {
                 transferCondition(child, subCondition, words);
             }
         } else {
-            if (isNodeType(express, "CHILD_EXPRESS")||isNodeType(express, "STAT_BLOCK")||isNodeType(express, "STAT_SEMICOLON")) {            //注意括号的情况
+            if (isNodeType(express, "CHILD_EXPRESS") || isNodeType(express, "STAT_BLOCK") || isNodeType(express, "STAT_SEMICOLON")) {            //注意括号的情况
                 ExpressNode realExpress = express.getChildren()[0];
                 condition.setPrior(true);
                 transferCondition(realExpress, condition, words);
@@ -250,82 +246,77 @@ public class RuleManager {
 
     }
 
-    private static String makeActionString(ExpressNode express, Word[] words)
-    {
+    private static String makeActionString(ExpressNode express, Word[] words) {
         int min = getMinNode(express);
         int max = getMaxNode(express);
         //最后需要匹配一个）括号的问题,另外还有是无参数的情况 function()
-        while(max+1<words.length && (words[max+1].word.equals(")")||words[max+1].word.equals("("))){
+        while (max + 1 < words.length && (words[max + 1].word.equals(")") || words[max + 1].word.equals("("))) {
             max++;
         }
-        if(min<0) min = 0;
-        if(max>=words.length) max = words.length-1;
+        if (min < 0) min = 0;
+        if (max >= words.length) max = words.length - 1;
         StringBuilder result = new StringBuilder();
         int balance = 0;//小括号的相互匹配数量
-        for(int i=min;i<=max;i++)
-        {
-            if(words[i].word.equals("(")){
+        for (int i = min; i <= max; i++) {
+            if (words[i].word.equals("(")) {
                 balance++;
-            }else if(words[i].word.equals(")")){
+            } else if (words[i].word.equals(")")) {
                 balance--;
             }
-            if(balance<0){
+            if (balance < 0) {
                 balance++;//当前字符不合并，恢复成0，用于最终的判断
                 break;
             }
             result.append(words[i].word);
-            if(words[i].word.equals("return")){
+            if (words[i].word.equals("return")) {
                 result.append(" ");
             }
         }
-        if(balance!=0){
+        if (balance != 0) {
             System.out.println(result);
             throw new RuntimeException("括号匹配异常");
         }
         return result.toString();
     }
 
-    private static String makeCondtionString(ExpressNode express,Word[] words)
-    {
+    private static String makeCondtionString(ExpressNode express, Word[] words) {
         int min = getMinNode(express);
         int max = getMaxNode(express);
         //最后需要匹配一个括号的问题
-        while(max+1<words.length && (words[max+1].word.equals(")")||words[max+1].word.equals("("))){
+        while (max + 1 < words.length && (words[max + 1].word.equals(")") || words[max + 1].word.equals("("))) {
             max++;
         }
-        if(min<0) min = 0;
-        if(max>=words.length) max = words.length-1;
+        if (min < 0) min = 0;
+        if (max >= words.length) max = words.length - 1;
         StringBuilder result = new StringBuilder();
         int balance = 0;//小括号的相互匹配数量
-        for(int i=min;i<=max;i++)
-        {
-            if(words[i].word.equals("(")){
+        for (int i = min; i <= max; i++) {
+            if (words[i].word.equals("(")) {
                 balance++;
-            }else if(words[i].word.equals(")")){
+            } else if (words[i].word.equals(")")) {
                 balance--;
             }
-            if(balance<0){
+            if (balance < 0) {
                 balance++;//当前字符不合并，恢复成0，用于最终的判断
                 break;
             }
             result.append(words[i].word);
         }
-        if(balance!=0){
+        if (balance != 0) {
             throw new RuntimeException("括号匹配异常");
         }
         return result.toString();
     }
 
-    private static int getMinNode(ExpressNode express)
-    {
-        if(express.getChildren()==null||express.getChildren().length==0){
+    private static int getMinNode(ExpressNode express) {
+        if (express.getChildren() == null || express.getChildren().length == 0) {
             return express.getWordIndex();
         }
         int wordIndex = express.getWordIndex();
-        if(express.getChildren()!=null){
-            for(ExpressNode child : express.getChildren()){
+        if (express.getChildren() != null) {
+            for (ExpressNode child : express.getChildren()) {
                 int childIndex = getMinNode(child);
-                if(wordIndex==-1 || childIndex<wordIndex){
+                if (wordIndex == -1 || childIndex < wordIndex) {
                     wordIndex = childIndex;
                 }
             }
@@ -333,28 +324,27 @@ public class RuleManager {
         return wordIndex;
     }
 
-    private static int getMaxNode(ExpressNode express)
-    {
-        if(express.getChildren()==null||express.getChildren().length==0){
+    private static int getMaxNode(ExpressNode express) {
+        if (express.getChildren() == null || express.getChildren().length == 0) {
             return express.getWordIndex();
         }
         int wordIndex = express.getWordIndex();
-        if(express.getChildren()!=null){
-            for(ExpressNode child : express.getChildren()){
+        if (express.getChildren() != null) {
+            for (ExpressNode child : express.getChildren()) {
                 int childIndex = getMaxNode(child);
-                if(childIndex>wordIndex){
+                if (childIndex > wordIndex) {
                     wordIndex = childIndex;
                 }
             }
         }
         return wordIndex;
     }
-    
-    
+
+
     public static Condition createCondition(ExpressNode condition, Word[] words) {
         Condition ruleCondition = new Condition();
         transferCondition(condition, ruleCondition, words);
         return ruleCondition;
     }
-    
+
 }

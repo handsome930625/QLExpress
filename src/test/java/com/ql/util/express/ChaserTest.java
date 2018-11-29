@@ -15,9 +15,8 @@ public class ChaserTest {
     public void testSimple() {
         ExpressRunner runner = new ExpressRunner(true, true);
         DefaultContext<String, Object> context = new DefaultContext<>();
-
 //        String express = "n=10;sum=0;for(i=0;i<n;i++){sum=sum+i;}return sum;";
-        String express = "1+1";
+        String express = "n=10;if(n==10){return 1;}else{return 2;}";
         Object r = null;
         try {
             r = runner.execute(express, context, null, false, true);
