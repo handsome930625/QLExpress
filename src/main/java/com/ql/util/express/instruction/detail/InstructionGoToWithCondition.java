@@ -18,6 +18,9 @@ public class InstructionGoToWithCondition extends Instruction {
      * 跳转条件
      */
     private boolean condition;
+    /**
+     * 是否弹出栈
+     */
     private boolean isPopStackData;
 
     public InstructionGoToWithCondition(boolean condition, int offset, boolean isPopStackData) {

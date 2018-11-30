@@ -4,12 +4,16 @@ import com.ql.util.express.ExpressUtil;
 import com.ql.util.express.InstructionSetContext;
 import com.ql.util.express.OperateData;
 
-
 /**
+ * 变量操作对象
+ *
  * @author wangyijie
  */
 public class OperateDataAttr extends OperateData {
     private static final long serialVersionUID = 7791088774033845299L;
+    /**
+     * 变量名
+     */
     protected String name;
 
     public OperateDataAttr(String aName, Class<?> aType) {
@@ -62,7 +66,7 @@ public class OperateDataAttr extends OperateData {
 
     @Override
     public Object getObjectInner(InstructionSetContext context) throws Exception {
-        if (this.name.equalsIgnoreCase("null")) {
+        if ("null".equalsIgnoreCase(this.name)) {
             return null;
         }
         if (context == null) {

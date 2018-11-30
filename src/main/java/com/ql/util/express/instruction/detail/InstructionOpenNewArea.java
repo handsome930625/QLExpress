@@ -7,6 +7,8 @@ import com.ql.util.express.instruction.opcache.OperateDataCacheManager;
 import java.util.List;
 
 /**
+ * 开辟一个新的变量内存空间
+ *
  * @author wangyijie
  */
 public class InstructionOpenNewArea extends Instruction {
@@ -14,7 +16,7 @@ public class InstructionOpenNewArea extends Instruction {
 
     @Override
     public void execute(RunEnvironment environment, List<String> errorList) throws Exception {
-        //目前的模式，不需要执行任何操作
+        // 目前的模式，不需要执行任何操作
         if (environment.isTrace() && log.isDebugEnabled()) {
             log.debug(this);
         }

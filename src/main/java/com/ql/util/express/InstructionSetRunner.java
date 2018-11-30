@@ -34,7 +34,7 @@ public class InstructionSetRunner {
      * @param errorList                 错误集合
      * @param isTrace                   是否链路日志
      * @param isCatchException          是否捕捉异常
-     * @param isReturnLastData
+     * @param isReturnLastData          是否返回栈中最后一个操作对象
      * @param aLog                      日志器
      * @param isSupportDynamicFieldName 是否支持动态列名
      * @return 表达式结果

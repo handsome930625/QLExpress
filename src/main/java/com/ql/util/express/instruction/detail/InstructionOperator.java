@@ -9,7 +9,7 @@ import com.ql.util.express.instruction.opdata.OperateDataAttr;
 import java.util.List;
 
 /**
- * 操作符指令
+ * 操作符指令执行类
  *
  * @author wangyijie
  */

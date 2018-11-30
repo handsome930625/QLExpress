@@ -8,13 +8,27 @@ public final class RunEnvironment {
     private boolean isTrace;
     private int point = -1;
     protected int programPoint = 0;
+    /**
+     * 操作数栈
+     */
     private OperateData[] dataContainer;
+
     private ArraySwap arraySwap = new ArraySwap();
-
+    /**
+     * 是否退出
+     */
     private boolean isExit = false;
+    /**
+     * 返回值
+     */
     private Object returnValue = null;
-
+    /**
+     * 运行环境指令
+     */
     private InstructionSet instructionSet;
+    /**
+     * 变量上下文
+     */
     private InstructionSetContext context;
 
 

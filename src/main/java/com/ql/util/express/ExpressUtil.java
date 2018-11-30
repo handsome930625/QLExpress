@@ -552,6 +552,9 @@ public class ExpressUtil {
         return Class.forName(name);
     }
 
+
+    private static Pattern p = Pattern.compile("\\$\\d+");
+
     /**
      * 替换字符串中的参数 replaceString("$1强化$2实施$2",new String[]{"qq","ff"})
      * ="qq 强化 ff 实施 ff"
@@ -566,7 +569,6 @@ public class ExpressUtil {
         if (str == null || parameters == null || parameters.length == 0) {
             return str;
         }
-        Pattern p = Pattern.compile("\\$\\d+");
         Matcher m = p.matcher(str);
         StringBuffer sb = new StringBuffer();
         while (m.find()) {

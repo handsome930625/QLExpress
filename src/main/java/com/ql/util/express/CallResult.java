@@ -1,7 +1,18 @@
 package com.ql.util.express;
 
+/**
+ * 调用结果返回类
+ *
+ * @author wangyijie
+ */
 public class CallResult {
+    /**
+     * 结果
+     */
     private Object returnValue;
+    /**
+     * 是否退出了
+     */
     private boolean isExit;
 
     public CallResult(Object aReturnValue, boolean aIsExit) {

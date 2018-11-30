@@ -11,7 +11,7 @@ import java.util.Stack;
 
 
 /**
- * @author wangyijie
+ * @author wangyijie ID
  */
 public class LoadAttrInstructionFactory extends InstructionFactory {
 
@@ -21,7 +21,6 @@ public class LoadAttrInstructionFactory extends InstructionFactory {
             throws Exception {
         FunctionInstructionSet functionSet = result.getMacroDefine(node.getValue());
         if (functionSet != null) {
-            //
             // 是宏定义
             result.insertInstruction(result.getCurrentPoint() + 1, new InstructionCallMacro(node.getValue()).setLine(node.getLine()).setLine(node.getLine()));
         } else {

@@ -4,6 +4,8 @@ import com.ql.util.express.Operator;
 import com.ql.util.express.OperatorOfNumber;
 
 /**
+ * 操作相加
+ *
  * @author wangyijie
  */
 public class OperatorAdd extends Operator {

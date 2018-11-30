@@ -10,7 +10,7 @@ import com.ql.util.express.parse.ExpressNode;
 import java.util.Stack;
 
 /**
- * @author wangyijie
+ * @author wangyijie    block semicolon child_express {
  */
 public class BlockInstructionFactory extends InstructionFactory {
 
@@ -18,6 +18,7 @@ public class BlockInstructionFactory extends InstructionFactory {
     public boolean createInstruction(ExpressRunner compile, InstructionSet result,
                                      Stack<ForRelBreakContinue> forStack, ExpressNode node, boolean isRoot)
             throws Exception {
+        // 分割符说明操作结束了,堆栈重新设置
         if (node.isTypeEqualsOrChild("STAT_SEMICOLON")
                 && result.getCurrentPoint() >= 0 && !(result.getInstruction(result.getCurrentPoint()) instanceof InstructionClearDataStack)) {
             result.addInstruction(new InstructionClearDataStack().setLine(node.getLine()));

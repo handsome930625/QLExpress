@@ -118,15 +118,14 @@ public class QLPattern {
         if (pattern.nodeType == eofNodeType && point == nodes.size()) {
             // 如果是程序结尾
             result = new QLMatchResult(new ArrayList<QLMatchResultTree>(), point + 1);
-        } else if (pattern.nodeType == eofNodeType && point < nodes.size() && nodes.get(point).getValue().equals("}")) {
+        } else if (pattern.nodeType == eofNodeType && point < nodes.size() && "}".equals(nodes.get(point).getValue())) {
             // 如果是程序结尾符，并且是 }
             result = new QLMatchResult(new ArrayList<QLMatchResultTree>(), point);
         } else if (point == nodes.size() && pattern.nodeType.getPatternNode() != null) {
-            // TODO 待定。。
             result = findMatchStatementWithAddRoot(aManager, pattern.nodeType.getPatternNode(), nodes, point, false, maxMatchPoint);
         } else if (point < nodes.size()) {
             INodeType tempNodeType = nodes.get(point).getTreeType();
-            // 多此一举？
+
             if (tempNodeType == null) {
                 tempNodeType = nodes.get(point).getNodeType();
             }
@@ -151,11 +150,12 @@ public class QLPattern {
                     result.matchs.get(0).targetNodeType = pattern.targetNodeType;
                 }
             }
+
             if (pattern.blame) {
                 // 取返处理
                 if (result == null) {
                     List<QLMatchResultTree> tempList = new ArrayList<>();
-                    tempList.add(new QLMatchResultTree(tempNodeType, nodes.get(point), null));
+                    tempList.add(new QLMatchResultTree(null, nodes.get(point), null));
                     point = point + 1;
                     result = new QLMatchResult(tempList, point);
                 } else {

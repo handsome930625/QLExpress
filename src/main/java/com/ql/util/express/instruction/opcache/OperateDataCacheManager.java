@@ -53,8 +53,8 @@ public class OperateDataCacheManager {
     /**
      * 获取运行环境上下文
      */
-    public static RunEnvironment fetRunEnvironment(InstructionSet aInstructionSet, InstructionSetContext aContext, boolean aIsTrace) {
-        return getOperateDataCache().fetRunEnvironment(aInstructionSet, aContext, aIsTrace);
+    public static RunEnvironment fetRunEnvironment(InstructionSet instructionSet, InstructionSetContext context, boolean isTrace) {
+        return getOperateDataCache().fetRunEnvironment(instructionSet, context, isTrace);
     }
 
     public static CallResult fetchCallResult(Object aReturnValue, boolean aIsExit) {
@@ -64,8 +64,11 @@ public class OperateDataCacheManager {
     /**
      * 获取指令上下文
      */
-    public static InstructionSetContext fetchInstructionSetContext(boolean aIsExpandToParent, ExpressRunner aRunner, IExpressContext<String, Object> aParent, ExpressLoader aExpressLoader, boolean aIsSupportDynamicFieldName) {
-        return getOperateDataCache().fetchInstructionSetContext(aIsExpandToParent, aRunner, aParent, aExpressLoader, aIsSupportDynamicFieldName);
+    public static InstructionSetContext fetchInstructionSetContext(boolean isExpandToParent, ExpressRunner runner,
+                                                                   IExpressContext<String, Object> parent,
+                                                                   ExpressLoader expressLoader, boolean
+                                                                           isSupportDynamicFieldName) {
+        return getOperateDataCache().fetchInstructionSetContext(isExpandToParent, runner, parent, expressLoader, isSupportDynamicFieldName);
     }
 
     public static long getFetchCount() {

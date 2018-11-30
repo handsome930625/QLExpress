@@ -2,6 +2,9 @@ package com.ql.util.express;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * description: 源码测试
  *
@@ -12,17 +15,39 @@ import org.junit.Test;
 public class ChaserTest {
 
     @Test
-    public void testSimple() {
+    public void testIf() {
         ExpressRunner runner = new ExpressRunner(true, true);
+        List<String> errorList = new ArrayList<>();
         DefaultContext<String, Object> context = new DefaultContext<>();
-//        String express = "n=10;sum=0;for(i=0;i<n;i++){sum=sum+i;}return sum;";
-        String express = "n=10;if(n==10){return 1;}else{return 2;}";
+        context.put("n", 1);
+        String express = "if(1==10){return 1;}else{return 2;}";
         Object r = null;
         try {
-            r = runner.execute(express, context, null, false, true);
+            r = runner.execute(express, context, errorList, false, true);
+            System.out.println(errorList);
         } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println(r);
     }
+
+    @Test
+    public void testFor() {
+        String express = "sum=0;for(i=0;i<10;i++){" +
+                "sum=sum+i;" +
+                "}" +
+                "return i;";
+        ExpressRunner runner = new ExpressRunner(true, true);
+        List<String> errorList = new ArrayList<>();
+        DefaultContext<String, Object> context = new DefaultContext<>();
+        Object r = null;
+        try {
+            r = runner.execute(express, context, errorList, false, true);
+            System.out.println(errorList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(r);
+    }
+
 }

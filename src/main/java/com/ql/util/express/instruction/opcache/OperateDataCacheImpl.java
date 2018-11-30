@@ -97,27 +97,28 @@ public class OperateDataCacheImpl implements IOperateDataCache {
     }
 
     @Override
-    public InstructionSetContext fetchInstructionSetContext(boolean aIsExpandToParent, ExpressRunner aRunner, IExpressContext<String, Object> aParent, ExpressLoader aExpressLoader, boolean aIsSupportDynamicFieldName) {
+    public InstructionSetContext fetchInstructionSetContext(boolean isExpandToParent, ExpressRunner runner,
+                                                            IExpressContext<String, Object> parent, ExpressLoader expressLoader, boolean isSupportDynamicFieldName) {
         InstructionSetContext result;
         if (contextPoint < length) {
             result = contextList[contextPoint];
-            result.initial(aIsExpandToParent, aRunner, aParent, aExpressLoader, aIsSupportDynamicFieldName);
+            result.initial(isExpandToParent, runner, parent, expressLoader, isSupportDynamicFieldName);
             contextPoint = contextPoint + 1;
         } else {
-            result = new InstructionSetContext(aIsExpandToParent, aRunner, aParent, aExpressLoader, aIsSupportDynamicFieldName);
+            result = new InstructionSetContext(isExpandToParent, runner, parent, expressLoader, isSupportDynamicFieldName);
         }
         return result;
     }
 
     @Override
-    public RunEnvironment fetRunEnvironment(InstructionSet aInstructionSet, InstructionSetContext aContext, boolean aIsTrace) {
+    public RunEnvironment fetRunEnvironment(InstructionSet instructionSet, InstructionSetContext context, boolean isTrace) {
         RunEnvironment result;
         if (environmentPoint < length) {
             result = environmentList[environmentPoint];
-            result.initial(aInstructionSet, aContext, aIsTrace);
+            result.initial(instructionSet, context, isTrace);
             environmentPoint = environmentPoint + 1;
         } else {
-            result = new RunEnvironment(aInstructionSet, aContext, aIsTrace);
+            result = new RunEnvironment(instructionSet, context, isTrace);
         }
         return result;
     }

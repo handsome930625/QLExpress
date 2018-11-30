@@ -6,6 +6,8 @@ import java.util.List;
 
 
 /**
+ * 清除栈针
+ *
  * @author wangyijie
  */
 public class InstructionClearDataStack extends Instruction {

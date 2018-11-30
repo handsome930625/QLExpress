@@ -17,7 +17,9 @@ public class InstructionSetContext implements IExpressContext<String, Object> {
      * 上层变量
      */
     private IExpressContext<String, Object> parent = null;
-
+    /**
+     * 本层变量
+     */
     private Map<String, Object> content;
     /**
      * 符号表
