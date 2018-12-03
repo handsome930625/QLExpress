@@ -17,11 +17,23 @@ enum NodeTypeKind {
      * 关键字
      */
     KEYWORD,
+    /**
+     * 块 {}
+     */
     BLOCK,
+    /**
+     * 表达式
+     */
     EXPRESS,
+    /**
+     * 操作符类型
+     */
     OPERATOR,
     WORDDEF,
     GROUP,
+    /**
+     * 语句
+     */
     STATEMENT
 }
 

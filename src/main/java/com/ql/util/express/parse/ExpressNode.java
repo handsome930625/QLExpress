@@ -26,7 +26,7 @@ public class ExpressNode implements IDataNode {
     /**
      * 节点原始值
      */
-    private String orgiValue;
+    private String origValue;
 
     private Object objectValue;
     /**
@@ -36,7 +36,6 @@ public class ExpressNode implements IDataNode {
     private List<ExpressNode> leftChildren;
     private List<ExpressNode> rightChildren;
     private boolean isSplitStatement = false;
-
     /**
      * 行号
      */
@@ -68,7 +67,7 @@ public class ExpressNode implements IDataNode {
             this.value = aValue;
         }
         if (aOrgiValue != null && aOrgiValue.length() > 0) {
-            this.orgiValue = aOrgiValue;
+            this.origValue = aOrgiValue;
         }
         if (aObjectValue != null) {
             this.objectValue = aObjectValue;
@@ -126,12 +125,12 @@ public class ExpressNode implements IDataNode {
         throw new RuntimeException("没有定义节点的指令InstructionFactory信息：" + this.nodeType.getName() + (this.treeType == null ? "" : " 或者 " + this.treeType.getName()));
     }
 
-    public String getOrgiValue() {
-        return orgiValue;
+    public String getOrigValue() {
+        return origValue;
     }
 
-    public void setOrgiValue(String orgiValue) {
-        this.orgiValue = orgiValue;
+    public void setOrigValue(String origValue) {
+        this.origValue = origValue;
     }
 
     public Object getObjectValue() {
@@ -237,13 +236,12 @@ public class ExpressNode implements IDataNode {
 
     @Override
     public String toString() {
-        // return str + "[" + this.line +"," + this.col +"]";
-        return (this.orgiValue == null ? this.getValue() : this.orgiValue) + (this.nodeType.getName() == null ? "" : (":" + this.nodeType.getName()));
+        return (this.origValue == null ? this.getValue() : this.origValue) + (this.nodeType.getName() == null ? "" : (":" + this.nodeType.getName()));
     }
 
     @Override
-    public IDataNode createExpressNode(INodeType aType, String aValue) throws Exception {
-        return new ExpressNode((NodeType) aType, aValue);
+    public IDataNode createExpressNode(INodeType type, String value) throws Exception {
+        return new ExpressNode((NodeType) type, value);
     }
 
     @Override

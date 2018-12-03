@@ -4,28 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 语法分析树节点类型类
+ *
  * @author wangyijie
  */
 public class QLMatchResultTree {
-
+    /**
+     * 匹配到的节点类型
+     */
     public INodeType matchNodeType;
-
+    /**
+     * 数据
+     */
     public IDataNode ref;
-
+    /**
+     * 目标解析类型，比如不同的 ( 解析的方式都不相同
+     */
     public INodeType targetNodeType;
-
+    /**
+     * 左子树
+     */
     private List<QLMatchResultTree> left;
-
+    /**
+     * 右子树
+     */
     private List<QLMatchResultTree> right;
 
-    public QLMatchResultTree(INodeType aNodeType, IDataNode aRef, INodeType aTargetNodeType) {
-        this(aNodeType, aRef);
-        this.targetNodeType = aTargetNodeType;
+    public QLMatchResultTree(INodeType nodeType, IDataNode ref, INodeType targetNodeType) {
+        this(nodeType, ref);
+        this.targetNodeType = targetNodeType;
     }
 
-    public QLMatchResultTree(INodeType aNodeType, IDataNode aRef) {
-        this.matchNodeType = aNodeType;
-        this.ref = aRef;
+    public QLMatchResultTree(INodeType nodeType, IDataNode ref) {
+        this.matchNodeType = nodeType;
+        this.ref = ref;
     }
 
     public IDataNode getRef() {
@@ -60,13 +72,12 @@ public class QLMatchResultTree {
     /**
      * 将匹配到的节点转成 targetType
      */
-    public IDataNode transferExpressNodeType(IDataNode sourceNode, INodeType targetType) {
+    public void transferExpressNodeType(IDataNode sourceNode, INodeType targetType) {
         sourceNode.setNodeType(targetType);
         if (targetType == targetType.getManager().findNodeType("CONST_STRING")) {
             sourceNode.setObjectValue(sourceNode.getValue());
             sourceNode.setTreeType(targetType.getManager().findNodeType("CONST"));
         }
-        return sourceNode;
     }
 
     /**

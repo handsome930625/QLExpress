@@ -1,8 +1,8 @@
 package com.ql.util.express.instruction.opdata;
 
-import com.ql.util.express.ExpressUtil;
-import com.ql.util.express.InstructionSetContext;
-import com.ql.util.express.OperateData;
+import com.ql.util.express.utils.ExpressUtil;
+import com.ql.util.express.instruction.env.InstructionSetContext;
+import com.ql.util.express.instruction.operator.OperateData;
 
 /**
  * 变量操作对象

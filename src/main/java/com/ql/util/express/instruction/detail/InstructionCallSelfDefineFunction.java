@@ -1,9 +1,10 @@
 package com.ql.util.express.instruction.detail;
 
-import com.ql.util.express.*;
+import com.ql.util.express.instruction.env.*;
 import com.ql.util.express.instruction.opcache.OperateDataCacheManager;
 import com.ql.util.express.instruction.opdata.OperateDataAttr;
 import com.ql.util.express.instruction.opdata.OperateDataLocalVar;
+import com.ql.util.express.instruction.operator.OperateData;
 import org.apache.commons.logging.Log;
 
 import java.util.List;

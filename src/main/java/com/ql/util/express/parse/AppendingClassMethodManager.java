@@ -1,9 +1,9 @@
 package com.ql.util.express.parse;
 
-import com.ql.util.express.ArraySwap;
-import com.ql.util.express.InstructionSetContext;
-import com.ql.util.express.OperateData;
-import com.ql.util.express.instruction.op.OperatorBase;
+import com.ql.util.express.instruction.env.ArraySwap;
+import com.ql.util.express.instruction.env.InstructionSetContext;
+import com.ql.util.express.instruction.operator.OperateData;
+import com.ql.util.express.instruction.operator.OperatorBase;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.ql.util.express.instruction.factory;
 
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.ExpressUtil;
-import com.ql.util.express.InstructionSet;
+import com.ql.util.express.utils.ExpressUtil;
+import com.ql.util.express.instruction.env.InstructionSet;
 import com.ql.util.express.instruction.detail.InstructionOperator;
-import com.ql.util.express.instruction.op.OperatorBase;
+import com.ql.util.express.instruction.operator.OperatorBase;
 import com.ql.util.express.parse.ExpressNode;
 
 import java.util.Stack;
@@ -27,7 +27,7 @@ public class NewInstructionFactory extends InstructionFactory {
                 tempStr.append("[]");
             }
             children[0].setValue(tempStr.toString());
-            children[0].setOrgiValue(tempStr.toString());
+            children[0].setOrigValue(tempStr.toString());
             children[0].setObjectValue(ExpressUtil.getJavaClass(tempStr.toString()));
         } else if (node.isTypeEqualsOrChild("anonymousNewArray")) {
             op = aCompile.getOperatorFactory().newInstance("anonymousNewArray");

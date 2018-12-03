@@ -1,9 +1,9 @@
 package com.ql.util.express.test;
 
-import com.ql.util.express.DefaultContext;
+import com.ql.util.express.instruction.env.DefaultContext;
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.instruction.op.OperatorBase;
-import com.ql.util.express.instruction.op.OperatorSelfDefineClassFunction;
+import com.ql.util.express.instruction.operator.OperatorBase;
+import com.ql.util.express.instruction.operator.OperatorSelfDefineClassFunction;
 
 public class FunctionDescTest {
 	@org.junit.Test

@@ -1,7 +1,7 @@
 package com.ql.util.express.instruction.opdata;
 
-import com.ql.util.express.InstructionSetContext;
-import com.ql.util.express.OperateData;
+import com.ql.util.express.instruction.env.InstructionSetContext;
+import com.ql.util.express.instruction.operator.OperateData;
 
 import java.lang.reflect.Array;
 

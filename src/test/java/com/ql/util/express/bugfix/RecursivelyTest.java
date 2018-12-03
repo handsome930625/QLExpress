@@ -1,9 +1,9 @@
 package com.ql.util.express.bugfix;
 
-import com.ql.util.express.DefaultContext;
+import com.ql.util.express.instruction.env.DefaultContext;
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.IExpressContext;
-import com.ql.util.express.Operator;
+import com.ql.util.express.instruction.env.IExpressContext;
+import com.ql.util.express.instruction.operator.Operator;
 import org.junit.Test;
 
 /**

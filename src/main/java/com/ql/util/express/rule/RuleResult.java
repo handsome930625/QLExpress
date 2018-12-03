@@ -3,32 +3,33 @@ package com.ql.util.express.rule;
 import java.util.Map;
 
 /**
- * Created by tianqiao on 16/12/12.
+ * @author tianqiao
+ * @date 16/12/12
  */
 public class RuleResult {
 
     private boolean hasException = false;
     private Rule rule;
-    private Map<String,Boolean> traceMap;
+    private Map<String, Boolean> traceMap;
     private Object result;
     private String script;
-    
+
     public String getScript() {
         return script;
     }
-    
+
     public void setScript(String script) {
         this.script = script;
     }
-    
+
     public boolean isHasException() {
         return hasException;
     }
-    
+
     public void setHasException(boolean hasException) {
         this.hasException = hasException;
     }
-    
+
     public Rule getRule() {
         return rule;
     }

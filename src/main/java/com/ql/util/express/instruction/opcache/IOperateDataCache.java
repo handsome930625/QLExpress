@@ -1,7 +1,10 @@
 package com.ql.util.express.instruction.opcache;
 
 import com.ql.util.express.*;
+import com.ql.util.express.instruction.env.*;
 import com.ql.util.express.instruction.opdata.*;
+import com.ql.util.express.instruction.operator.OperateData;
+import com.ql.util.express.parse.ExpressLoader;
 
 /**
  * @author wangyijie

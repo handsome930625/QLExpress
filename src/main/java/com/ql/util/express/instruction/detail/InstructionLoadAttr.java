@@ -1,7 +1,7 @@
 package com.ql.util.express.instruction.detail;
 
-import com.ql.util.express.InstructionSet;
-import com.ql.util.express.RunEnvironment;
+import com.ql.util.express.instruction.env.InstructionSet;
+import com.ql.util.express.instruction.env.RunEnvironment;
 import com.ql.util.express.instruction.opdata.OperateDataAttr;
 
 import java.util.List;

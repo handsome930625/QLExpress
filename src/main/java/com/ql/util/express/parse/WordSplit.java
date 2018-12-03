@@ -47,11 +47,11 @@ public class WordSplit {
                 StringBuilder tmpResult = new StringBuilder();
                 int tmpPoint = tempDealStr.indexOf("\\");
                 while (tmpPoint >= 0) {
-                    tmpResult.append(tempDealStr.substring(0, tmpPoint));
+                    tmpResult.append(tempDealStr, 0, tmpPoint);
                     if (tmpPoint == tempDealStr.length() - 1) {
                         throw new Exception("字符串中的" + "\\错误:" + tempDealStr);
                     }
-                    tmpResult.append(tempDealStr.substring(tmpPoint + 1, tmpPoint + 2));
+                    tmpResult.append(tempDealStr, tmpPoint + 1, tmpPoint + 2);
                     tempDealStr = tempDealStr.substring(tmpPoint + 2);
                     tmpPoint = tempDealStr.indexOf("\\");
                 }
@@ -105,9 +105,8 @@ public class WordSplit {
      * 根据操作符长度排序
      *
      * @param splitWord 运算符
-     * @return 排序好的数组
      */
-    public static String[] sortSplitWord(String[] splitWord) {
+    public static void sortSplitWord(String[] splitWord) {
         Arrays.sort(splitWord, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -115,7 +114,6 @@ public class WordSplit {
 
             }
         });
-        return splitWord;
     }
 
     protected static boolean isNumber(String str) {

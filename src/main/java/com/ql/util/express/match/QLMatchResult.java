@@ -6,31 +6,35 @@ import java.util.List;
  * @author wangyijie
  */
 public class QLMatchResult {
-
-    protected List<QLMatchResultTree> matchs;
-
+    /**
+     * 匹配节点树
+     */
+    protected List<QLMatchResultTree> matches;
+    /**
+     * 最后匹配到的节点索引
+     */
     protected int matchLastIndex;
 
     public QLMatchResult(List<QLMatchResultTree> aList, int aIndex) {
         this.matchLastIndex = aIndex;
-        this.matchs = aList;
+        this.matches = aList;
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (QLMatchResultTree item : matchs) {
+        for (QLMatchResultTree item : matches) {
             item.printNode(builder, 1);
         }
         return builder.toString();
     }
 
-    public List<QLMatchResultTree> getMatchs() {
-        return matchs;
+    public List<QLMatchResultTree> getMatches() {
+        return matches;
     }
 
-    public void setMatchs(List<QLMatchResultTree> matchs) {
-        this.matchs = matchs;
+    public void setMatches(List<QLMatchResultTree> matches) {
+        this.matches = matches;
     }
 
     public int getMatchLastIndex() {

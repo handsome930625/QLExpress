@@ -8,10 +8,10 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.ql.util.express.DefaultContext;
+import com.ql.util.express.instruction.env.DefaultContext;
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.InstructionSet;
-import com.ql.util.express.InstructionSetRunner;
+import com.ql.util.express.instruction.env.InstructionSet;
+import com.ql.util.express.instruction.env.InstructionSetRunner;
 
 public class DongtaiFieldTest {
 

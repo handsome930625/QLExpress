@@ -1,10 +1,13 @@
 package com.ql.util.express.bugfix;
 
 import com.ql.util.express.*;
-import com.ql.util.express.instruction.op.OperatorBase;
+import com.ql.util.express.instruction.env.ArraySwap;
+import com.ql.util.express.instruction.env.DefaultContext;
+import com.ql.util.express.instruction.env.IExpressContext;
+import com.ql.util.express.instruction.env.InstructionSetContext;
+import com.ql.util.express.instruction.operator.OperateData;
+import com.ql.util.express.instruction.operator.OperatorBase;
 import org.junit.Test;
-
-import java.util.List;
 
 /**
  * 

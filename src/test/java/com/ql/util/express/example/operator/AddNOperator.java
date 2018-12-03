@@ -1,6 +1,6 @@
 package com.ql.util.express.example.operator;
 
-import com.ql.util.express.Operator;
+import com.ql.util.express.instruction.operator.Operator;
 
 /**
  * 定义连加的操作符

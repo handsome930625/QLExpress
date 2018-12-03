@@ -3,15 +3,16 @@ package com.ql.util.express.rule;
 import java.util.List;
 
 /**
- * Created by tianqiao on 16/12/6.
+ * @author tianqiao
+ * @date 16/12/6
  */
-public class RuleCase extends Node{
+public class RuleCase extends Node {
 
     private List<Action> actions;
 
     private Condition condition;
 
-    public RuleCase(Condition condition,List<Action> actions) {
+    public RuleCase(Condition condition, List<Action> actions) {
         this.actions = actions;
         this.condition = condition;
     }

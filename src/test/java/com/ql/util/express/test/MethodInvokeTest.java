@@ -2,9 +2,9 @@ package com.ql.util.express.test;
 
 import org.junit.Test;
 
-import com.ql.util.express.DefaultContext;
+import com.ql.util.express.instruction.env.DefaultContext;
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.IExpressContext;
+import com.ql.util.express.instruction.env.IExpressContext;
 
 /**
  * @author tianqiao

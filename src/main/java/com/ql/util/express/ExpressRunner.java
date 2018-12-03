@@ -1,10 +1,13 @@
 package com.ql.util.express;
 
+import com.ql.util.express.instruction.env.IExpressContext;
+import com.ql.util.express.instruction.env.InstructionSet;
+import com.ql.util.express.instruction.env.InstructionSetRunner;
 import com.ql.util.express.instruction.factory.ForRelBreakContinue;
-import com.ql.util.express.instruction.opcache.IOperateDataCache;
 import com.ql.util.express.instruction.factory.InstructionFactory;
+import com.ql.util.express.instruction.operator.*;
+import com.ql.util.express.instruction.opcache.IOperateDataCache;
 import com.ql.util.express.instruction.opcache.OperateDataCacheImpl;
-import com.ql.util.express.instruction.op.*;
 import com.ql.util.express.parse.*;
 import com.ql.util.express.rule.Condition;
 import com.ql.util.express.rule.Rule;
@@ -439,12 +442,12 @@ public class ExpressRunner {
      * 添加操作符号，此操作符号与给定的参照操作符号在优先级别和语法形式上一致
      *
      * @param name         操作符号名称
-     * @param aRefOpername 参照的操作符号，例如 "+","--"等
-     * @param op
-     * @throws Exception
+     * @param refOpername 参照的操作符号，例如 "+","--"等
+     * @param op           操作符实例
+     * @throws Exception 异常
      */
-    public void addOperator(String name, String aRefOpername, Operator op) throws Exception {
-        this.manager.addOperatorWithLevelOfReference(name, aRefOpername);
+    public void addOperator(String name, String refOpername, Operator op) throws Exception {
+        this.manager.addOperatorWithLevelOfReference(name, refOpername);
         this.operatorManager.addOperator(name, op);
     }
 
@@ -452,17 +455,17 @@ public class ExpressRunner {
      * 添加操作符和关键字的别名，同时对操作符可以指定错误信息。
      * 例如：addOperatorWithAlias("加","+",null)
      *
-     * @param keyWordName
-     * @param realKeyWordName
-     * @param errorInfo
-     * @throws Exception
+     * @param keyWordName     操作符别名
+     * @param realKeyWordName 目前操作符关键字
+     * @param errorInfo       增加错误信息
+     * @throws Exception 异常
      */
     public void addOperatorWithAlias(String keyWordName, String realKeyWordName,
                                      String errorInfo) throws Exception {
         if (errorInfo != null && errorInfo.trim().length() == 0) {
             errorInfo = null;
         }
-        //添加函数别名
+        // 添加函数别名
         if (this.manager.isFunction(realKeyWordName)) {
             this.manager.addFunctionName(keyWordName);
             this.operatorManager.addOperatorWithAlias(keyWordName, realKeyWordName, errorInfo);
@@ -654,9 +657,6 @@ public class ExpressRunner {
                 selfDefineClass.put(item.getName(), item.getName());
             }
         }
-
-//      分成两句话执行，用来保存中间的words结果
-//		ExpressNode root = this.parse.parse(this.rootExpressPackage,text, isTrace,selfDefineClass);
 
         Word[] words = this.parse.splitWords(rootExpressPackage, text, isTrace, selfDefineClass);
         ExpressNode root = this.parse.parse(rootExpressPackage, words, text, isTrace, selfDefineClass);

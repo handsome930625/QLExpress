@@ -1,16 +1,10 @@
 package com.ql.util.express.test;
 
-import com.ql.util.express.DefaultContext;
+import com.ql.util.express.instruction.env.DefaultContext;
 import com.ql.util.express.DynamicParamsUtil;
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.IExpressContext;
-import com.ql.util.express.example.operator.ApproveOperator;
+import com.ql.util.express.instruction.env.IExpressContext;
 import org.junit.Test;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * tianqiao

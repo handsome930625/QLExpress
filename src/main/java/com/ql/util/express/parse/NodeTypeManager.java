@@ -140,9 +140,9 @@ public class NodeTypeManager implements INodeTypeManager {
     /**
      * 增加新的操作符号，其优先级别，以及语法关系与参照的操作符号一致
      *
-     * @param operName
-     * @param refOperName
-     * @throws Exception
+     * @param operName    操作符名
+     * @param refOperName 引用
+     * @throws Exception 异常
      */
     public void addOperatorWithLevelOfReference(String operName, String refOperName) throws Exception {
         NodeType target = this.createNodeType(operName + ":TYPE=KEYWORD");

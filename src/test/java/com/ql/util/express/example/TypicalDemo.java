@@ -3,9 +3,9 @@ package com.ql.util.express.example;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ql.util.express.DefaultContext;
+import com.ql.util.express.instruction.env.DefaultContext;
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.IExpressContext;
+import com.ql.util.express.instruction.env.IExpressContext;
 
 /**
  * QLExpress的一种典型应用场景

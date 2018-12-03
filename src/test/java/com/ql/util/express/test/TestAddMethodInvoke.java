@@ -1,16 +1,14 @@
 package com.ql.util.express.test;
 
-import com.ql.util.express.DefaultContext;
+import com.ql.util.express.instruction.env.DefaultContext;
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.IExpressContext;
-import com.ql.util.express.Operator;
+import com.ql.util.express.instruction.env.IExpressContext;
+import com.ql.util.express.instruction.operator.Operator;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by tianqiao on 16/10/17.

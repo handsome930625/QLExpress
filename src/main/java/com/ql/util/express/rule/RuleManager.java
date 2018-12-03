@@ -1,7 +1,7 @@
 package com.ql.util.express.rule;
 
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.IExpressContext;
+import com.ql.util.express.instruction.env.IExpressContext;
 import com.ql.util.express.parse.ExpressNode;
 import com.ql.util.express.parse.Word;
 import org.apache.commons.logging.Log;
@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by tianqiao on 16/12/8.
+ * @author tianqiao
+ * @date 16/12/8
  */
 public class RuleManager {
 
@@ -22,7 +23,7 @@ public class RuleManager {
     public static RuleResult executeRule(ExpressRunner runner, Rule rule, IExpressContext<String, Object> context, boolean isCache, boolean isTrace) {
         RuleResult result = new RuleResult();
         result.setRule(rule);
-        Map<String, Boolean> traceMap = new LinkedHashMap<String, Boolean>();
+        Map<String, Boolean> traceMap = new LinkedHashMap<>();
         result.setTraceMap(traceMap);
         Object actionResult = null;
         for (RuleCase ruleCase : rule.getRuleCases()) {
@@ -286,10 +287,15 @@ public class RuleManager {
         while (max + 1 < words.length && (words[max + 1].word.equals(")") || words[max + 1].word.equals("("))) {
             max++;
         }
-        if (min < 0) min = 0;
-        if (max >= words.length) max = words.length - 1;
+        if (min < 0) {
+            min = 0;
+        }
+        if (max >= words.length) {
+            max = words.length - 1;
+        }
         StringBuilder result = new StringBuilder();
-        int balance = 0;//小括号的相互匹配数量
+        // 小括号的相互匹配数量
+        int balance = 0;
         for (int i = min; i <= max; i++) {
             if (words[i].word.equals("(")) {
                 balance++;
@@ -297,7 +303,8 @@ public class RuleManager {
                 balance--;
             }
             if (balance < 0) {
-                balance++;//当前字符不合并，恢复成0，用于最终的判断
+                // 当前字符不合并，恢复成0，用于最终的判断
+                balance++;
                 break;
             }
             result.append(words[i].word);

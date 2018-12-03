@@ -24,13 +24,14 @@ public class QLPattern {
     }
 
     public static QLMatchResult findMatchStatement(INodeTypeManager aManager, QLPatternNode pattern, List<? extends IDataNode> nodes, int point) throws Exception {
+        //
         AtomicLong maxMatchPoint = new AtomicLong();
 
         QLMatchResult result = findMatchStatementWithAddRoot(aManager, pattern, nodes, point, true, maxMatchPoint);
 
-        if (result == null || result.matchs.size() == 0) {
+        if (result == null || result.matches.size() == 0) {
             throw new Exception("程序错误，不满足语法规范，没有匹配到合适的语法,最大匹配致[0:" + (maxMatchPoint.longValue() - 1) + "]");
-        } else if (result.matchs.size() != 1) {
+        } else if (result.matches.size() != 1) {
             throw new Exception("程序错误，不满足语法规范，必须有一个根节点：" + pattern + ",最大匹配致[0:" + (maxMatchPoint.longValue() - 1) + "]");
         }
         return result;
@@ -72,17 +73,17 @@ public class QLPattern {
                 }
                 lastPoint = tempResult.matchLastIndex;
                 if (pattern.isTreeRoot) {
-                    if (tempResult.matchs.size() > 1) {
+                    if (tempResult.matches.size() > 1) {
                         throw new Exception("根节点的数量必须是1");
                     }
                     if (tempList.size() == 0) {
-                        tempList.addAll(tempResult.matchs);
+                        tempList.addAll(tempResult.matches);
                     } else {
-                        tempResult.matchs.get(0).addLeftAll(tempList);
-                        tempList = tempResult.matchs;
+                        tempResult.matches.get(0).addLeftAll(tempList);
+                        tempList = tempResult.matches;
                     }
                 } else {
-                    tempList.addAll(tempResult.matchs);
+                    tempList.addAll(tempResult.matches);
                 }
             }
             // 计算下匹配到的次数，如果等于最大匹配次数，那么跳出
@@ -96,14 +97,14 @@ public class QLPattern {
         // skip see (~) 字符
         if (result != null && pattern.isSkip) {
             // 忽略跳过所有匹配到的节点
-            result.matchs.clear();
+            result.matches.clear();
         }
 
-        if (result != null && result.matchs.size() > 0 && pattern.rootNodeType != null) {
+        if (result != null && result.matches.size() > 0 && pattern.rootNodeType != null) {
             QLMatchResultTree tempTree = new QLMatchResultTree(pattern.rootNodeType, nodes.get(0).createExpressNode(pattern.rootNodeType, null));
-            tempTree.addLeftAll(result.matchs);
-            result.matchs.clear();
-            result.matchs.add(tempTree);
+            tempTree.addLeftAll(result.matches);
+            result.matches.clear();
+            result.matches.add(tempTree);
         }
         return result;
     }
@@ -143,11 +144,11 @@ public class QLPattern {
                 traceLog(pattern, result, nodes, point - 1, 1);
             } else if (pattern.nodeType.getPatternNode() != null) {
                 result = findMatchStatementWithAddRoot(aManager, pattern.nodeType.getPatternNode(), nodes, point, false, maxMatchPoint);
-                if (pattern.targetNodeType != null && result != null && result.matchs.size() > 0) {
-                    if (result.matchs.size() > 1) {
+                if (pattern.targetNodeType != null && result != null && result.matches.size() > 0) {
+                    if (result.matches.size() > 1) {
                         throw new Exception("设置了类型转换的语法，只能有一个根节点");
                     }
-                    result.matchs.get(0).targetNodeType = pattern.targetNodeType;
+                    result.matches.get(0).targetNodeType = pattern.targetNodeType;
                 }
             }
 
@@ -203,7 +204,7 @@ public class QLPattern {
                 return null;
             }
 
-            if (tempResult.matchs.size() > 0) {
+            if (tempResult.matches.size() > 0) {
                 matchCount = matchCount + 1;
             }
             if (tempList == null) {
@@ -211,26 +212,26 @@ public class QLPattern {
             }
             point = tempResult.matchLastIndex;
             // 区分是否根节点
-            if (item.isTreeRoot && tempResult.matchs.size() > 0) {
-                if (tempResult.matchs.size() > 1) {
+            if (item.isTreeRoot && tempResult.matches.size() > 0) {
+                if (tempResult.matches.size() > 1) {
                     throw new Exception("根节点的数量必须是1");
                 }
                 if (root == null) {
                     // 递归获取最左节点
-                    QLMatchResultTree tempTree = tempResult.matchs.get(0);
+                    QLMatchResultTree tempTree = tempResult.matches.get(0);
                     while (tempTree.getLeft() != null && tempTree.getLeft().size() > 0) {
                         tempTree = tempTree.getLeft().get(0);
                     }
                     tempTree.addLeftAll(tempList);
                     tempList.clear();
                 } else {
-                    tempResult.matchs.get(0).addLeft(root);
+                    tempResult.matches.get(0).addLeft(root);
                 }
-                root = tempResult.matchs.get(0);
+                root = tempResult.matches.get(0);
             } else if (root != null) {
-                root.addRightAll(tempResult.matchs);
+                root.addRightAll(tempResult.matches);
             } else {
-                tempList.addAll(tempResult.matchs);
+                tempList.addAll(tempResult.matches);
             }
         }
 

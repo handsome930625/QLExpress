@@ -3,8 +3,8 @@ package com.ql.util.express.test;
 import org.apache.commons.logging.Log;
 import org.junit.Test;
 
-import com.ql.util.express.DefaultContext;
-import com.ql.util.express.ExportItem;
+import com.ql.util.express.instruction.env.DefaultContext;
+import com.ql.util.express.parse.ExportItem;
 import com.ql.util.express.ExpressRunner;
 
 public class LoadExpressFromFileTest {

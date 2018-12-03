@@ -12,7 +12,9 @@ enum MatchMode {
      * 或
      */
     OR,
-
+    /**
+     * 精确匹配
+     */
     DETAIL,
     /**
      * 空

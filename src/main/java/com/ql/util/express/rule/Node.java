@@ -1,7 +1,8 @@
 package com.ql.util.express.rule;
 
 /**
- * Created by tianqiao on 16/12/12.
+ * @author tianqiao
+ * @date 16/12/12
  */
 public class Node {
     private Integer nodeId;
@@ -11,6 +12,7 @@ public class Node {
     public Integer getNodeId() {
         return nodeId;
     }
+
     public void setNodeId(Integer nodeId) {
         this.nodeId = nodeId;
     }

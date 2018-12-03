@@ -1,10 +1,10 @@
 package com.ql.util.express.instruction.factory;
 
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.ExpressUtil;
-import com.ql.util.express.InstructionSet;
+import com.ql.util.express.utils.ExpressUtil;
+import com.ql.util.express.instruction.env.InstructionSet;
 import com.ql.util.express.instruction.detail.InstructionOperator;
-import com.ql.util.express.instruction.op.OperatorBase;
+import com.ql.util.express.instruction.operator.OperatorBase;
 import com.ql.util.express.parse.ExpressNode;
 
 import java.util.Stack;
@@ -32,7 +32,7 @@ class DefineInstructionFactory extends InstructionFactory {
         }
         if (arrayDimeCount > 0) {
             node.getLeftChildren().get(0).setValue(node.getLeftChildren().get(0).getValue() + tempStr);
-            node.getLeftChildren().get(0).setOrgiValue(node.getLeftChildren().get(0).getOrgiValue() + tempStr);
+            node.getLeftChildren().get(0).setOrigValue(node.getLeftChildren().get(0).getOrigValue() + tempStr);
             Object objValue = node.getLeftChildren().get(0).getObjectValue();
             if (objValue instanceof Class) {
                 Class<?> tmpClass = ExpressUtil.getJavaClass(ExpressUtil.getClassName((Class<?>) objValue) + tempStr);

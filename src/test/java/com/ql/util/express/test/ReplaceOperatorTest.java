@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.Operator;
+import com.ql.util.express.instruction.operator.Operator;
 
 public class ReplaceOperatorTest {
 	@Test

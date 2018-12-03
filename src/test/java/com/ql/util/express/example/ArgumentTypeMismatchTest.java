@@ -1,7 +1,11 @@
 package com.ql.util.express.example;
 
 import com.ql.util.express.*;
-import com.ql.util.express.instruction.op.OperatorBase;
+import com.ql.util.express.instruction.env.DefaultContext;
+import com.ql.util.express.instruction.env.IExpressContext;
+import com.ql.util.express.instruction.env.InstructionSet;
+import com.ql.util.express.instruction.operator.Operator;
+import com.ql.util.express.instruction.operator.OperatorBase;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.junit.Test;

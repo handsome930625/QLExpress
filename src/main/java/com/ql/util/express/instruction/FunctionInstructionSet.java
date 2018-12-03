@@ -1,11 +1,13 @@
 package com.ql.util.express.instruction;
 
-import com.ql.util.express.InstructionSet;
+import com.ql.util.express.instruction.env.InstructionSet;
 
 import java.io.Serializable;
 
 
 /**
+ * 方法类
+ *
  * @author wangyijie
  */
 public class FunctionInstructionSet implements Serializable {

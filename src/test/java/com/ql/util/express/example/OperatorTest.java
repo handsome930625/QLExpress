@@ -3,9 +3,9 @@ package com.ql.util.express.example;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.ql.util.express.DefaultContext;
+import com.ql.util.express.instruction.env.DefaultContext;
 import com.ql.util.express.ExpressRunner;
-import com.ql.util.express.IExpressContext;
+import com.ql.util.express.instruction.env.IExpressContext;
 import com.ql.util.express.example.operator.AddNOperator;
 import com.ql.util.express.example.operator.AddTwiceOperator;
 

@@ -1,7 +1,6 @@
 package com.ql.util.express.parse;
 
-import com.ql.util.express.ExpressUtil;
-import com.ql.util.express.IExpressResourceLoader;
+import com.ql.util.express.utils.ExpressUtil;
 import com.ql.util.express.match.QLMatchResult;
 import com.ql.util.express.match.QLPattern;
 import org.apache.commons.logging.Log;
@@ -368,8 +367,8 @@ public class ExpressParse {
             throw new Exception("还有单词没有完成语法匹配：" + result.getMatchLastIndex() + "[" + tempNode.getValue() + ":line=" + tempNode.getLine() + ",col=" + tempNode.getCol() + "] 之后的单词 \n" + express);
         }
         // 构建真实节点 ref设置左右节点
-        result.getMatchs().get(0).buildExpressNodeTree();
-        ExpressNode root = (ExpressNode) result.getMatchs().get(0).getRef();
+        result.getMatches().get(0).buildExpressNodeTree();
+        ExpressNode root = (ExpressNode) result.getMatches().get(0).getRef();
         // 为了生成代码时候进行判断，需要设置每个节点的父亲
         resetParent(root, null);
 
